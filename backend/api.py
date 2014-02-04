@@ -14,11 +14,10 @@ def get_request_response(content):
     
     return response
 
-@app.route('/api/' + oxp.settings.api_version + '/version')
+@app.route('/api/' + 'version')
 def get_api_version():
     content = {'API-Version': oxp.settings.api_version}
     return get_request_response(json.dumps(content))
-
 
 if __name__ == '__main__':
     app.debug = oxp.settings.debug
