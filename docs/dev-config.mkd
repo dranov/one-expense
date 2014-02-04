@@ -1,0 +1,21 @@
+The following document assumes a Debian GNU/Linux operating system.
+
+
+## Prerequisites
+
+Install necessary packages:
+
+    sudo apt-get install python2.7 python-pip mysql-server mysql-client mysql-workbench git
+    
+Unless otherwise specified, all passwords are `redteam` on the development environment.
+
+The git repository currently resides at `https://github.com/dranov/one-expense`
+
+Backend framework:
+
+    sudo pip install flask
+    
+
+## Clone the repo
+
+    git clone https://github.com/dranov/one-expense

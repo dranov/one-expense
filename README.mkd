@@ -1,0 +1,10 @@
+![GNU GPL3v or later](https://www.gnu.org/graphics/gplv3-88x31.png)
+
+One Expense
+===========
+
+One Expense is a multi-user web-based personal expense tracker. It is licensed under the GNU GPLv3, or any later version, at your discretion.
+
+The backend is written in Python 2.7 using [Flask](http://flask.pocoo.org/docs/api/). The frontend is HTML5 with [AngularJS](http://angularjs.org/).
+
+
