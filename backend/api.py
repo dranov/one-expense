@@ -64,7 +64,7 @@ def get_all_categories():
     categories = dict()
 
     for cat in range(10):
-        categories[cat] = fake.bs()
+        categories[cat] = {'name' : fake.bs()};
 
     return get_request_response(json.dumps(categories))
 
