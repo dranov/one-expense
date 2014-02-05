@@ -37,7 +37,10 @@
 ehthumbs.db
 Thumbs.db
 
-# Modified files#
-#################
+# Modified files #
+##################
 *~
 
+# Personal settings #
+#####################
+backend/oxp/my_settings.py

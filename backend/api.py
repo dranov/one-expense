@@ -6,6 +6,7 @@ import faker
 import random
 
 import oxp.settings as settings
+import oxp.storage as storage
 
 app = flask.Flask(__name__)
 fake = faker.Faker()
@@ -34,39 +35,68 @@ def login():
 # POST {name, sum}
 @app.route(settings.API_URL_PREFIX + 'expense', methods=['POST'])
 def add_expense():
-    pass
+    if flask.request.method == 'POST':
+        # The get_json() method is badly named; it also parses the JSON
+        e = flask.request.get_json()
+
+        # If object isn't an expense, bad request
+        if ('name' not in e) or ('sum' not in e) or ('category_id' not in e):
+            flask.abort(400)
+
+        db_exp = storage.Expense(name=e['name'], sum=e['sum'],
+                category_id=e['category_id'])
+        db_exp.save()
+
+
+        #TODO: return expense id?
+        return get_request_response('')
+
 
 
 # GET
 @app.route(settings.API_URL_PREFIX + 'expenses', methods=['GET'])
 def get_all_expenses():
-    expenses = dict()
+    if flask.request.method == 'GET':
+        expenses = dict()
 
-    for exp in range(random.randint(3, 15)):
-        expenses[exp] = {
-            'name': fake.word(),
-            'sum': fake.random_number(digits=4),
-            'category_id': random.randrange(10)
-        }
+        for e in storage.Expense.select():
+            expenses[e.id] = {'name': e.name, 'sum': e.sum,
+                    'category_id': e.category_id}
 
-    return get_request_response(json.dumps(expenses))
+        return get_request_response(json.dumps(expenses))
+
 
 
 # POST {name}
 @app.route(settings.API_URL_PREFIX + 'category', methods=['POST'])
 def add_category():
-    pass
+    if flask.request.method == 'POST':
+        # The get_json() method is badly named; it also parses the JSON
+        c = flask.request.get_json()
+
+        # If object isn't a category, bad request
+        if ('name' not in e):
+            flask.abort(400)
+
+        db_cat = storage.Category(name=e['name'])
+        db_cat.save()
+
+
+        #TODO: return category id?
+        return get_request_response('')
+
 
 
 # GET
-@app.route(settings.API_URL_PREFIX + 'categories')
+@app.route(settings.API_URL_PREFIX + 'categories', methods=['GET'])
 def get_all_categories():
-    categories = dict()
+    if flask.request.method == 'GET':
+        categories = dict()
 
-    for cat in range(10):
-        categories[cat] = fake.bs()
+        for c in storage.Category.select():
+            categories[c.id] = {'name': c.name}
 
-    return get_request_response(json.dumps(categories))
+        return get_request_response(json.dumps(categories))
 
 
 

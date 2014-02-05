@@ -13,7 +13,7 @@ The git repository currently resides at `https://github.com/dranov/one-expense`
 
 Backend framework:
 
-    sudo pip install flask peewee MYSQL-python faker 
+    sudo pip install flask peewee MYSQL-python faker fake-factory
 
 
 ## Configure MySQL
@@ -30,6 +30,12 @@ Make it possible to connect to user `root` from `192.168.0.100`. Replace `192.16
     mysql> GRANT ALL ON *.* to root@'192.168.0.100' IDENTIFIED BY 'redteam'; 
 
     mysql> FLUSH PRIVILEGES;
+    
+Pentru a creea baza de date `oxp`:
+    
+    CREATE DATABASE oxp
+      DEFAULT CHARACTER SET utf8
+      DEFAULT COLLATE utf8_general_ci;
     
 
 ## Clone the repo
