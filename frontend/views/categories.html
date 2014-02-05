@@ -1,6 +1,6 @@
-<div id="header">
+<div id="header" ng-controller="catModalController">
 	<div id="logo">	</div>
-	<div id="addCategory"></div>
+	<div id="addCategory" ng-click="open()"> </div>
 </div>
 
 <div id="content">
@@ -9,8 +9,10 @@
 
 	<div id="categories">
 		<div class="category" ng-repeat="category in categories">
+			<div class="index" style="display: none;">{{ category.index }}</div>
 			<div class="categoryName">{{ category.name }}</div>
-			<div class="categoryBar"></div>
+			<div class="barContainer"> <div class="categoryBar">60%</div> </div>
 		</div>
 	</div>
 </div>
+

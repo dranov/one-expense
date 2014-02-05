@@ -28,7 +28,7 @@
 	margin-right: 20px;
 	margin-left: auto;
 
-	background: #444;
+	background: #CCC;
 }
 
 #content {
@@ -44,7 +44,7 @@
 	display: block;
 
 	text-align: center;
-	font-size: 40px;
+	font-size: 36px;
 }
 
 #categories {
@@ -60,9 +60,38 @@
 	display: block;
 }
 
-#categories .categoryBar {
-	display: block;
-	height: 25px;
+#categories .barContainer {
+	height: 20px;
+	width: 100%;
 
-	background: #D55;
+	background: #EEE;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+}
+
+#categories .categoryBar {
+	float: left;
+	height: 20px;
+	width: 60%;
+
+	background: #D66;
+	color: #fff;
+	font-size: 12px;
+	text-align: center;
+}
+
+/* --- Add Category Modal --- */
+#cat-modal-body {
+	padding: 10px;
+	padding-bottom: 0;
+}
+
+#cat-modal-footer {
+	padding: 10px;
+}
+
+#cat-modal-name {
+	width: 100%;
+	font-size: 16px;
 }
