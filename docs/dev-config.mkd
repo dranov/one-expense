@@ -36,8 +36,18 @@ Pentru a creea baza de date `oxp`:
     CREATE DATABASE oxp
       DEFAULT CHARACTER SET utf8
       DEFAULT COLLATE utf8_general_ci;
-    
 
 ## Clone the repo
 
     git clone git@github.com:dranov/one-expense.git
+    
+## Point API to MySQL
+
+By default, the API will try to connect to MySQL using the settings in `backend/oxp/settings.py`. If these settings are not OK for your environment, **DO NOT** modify `backend/oxp/settings.py`.
+
+Instead, create the file `backend/oxp/my_settings.py` and overwrite any default configuration options in that file. `my_settings.py` is not tracked in version control. This way, `settings.py` contains sensible defaults and we don't polute the repository with settings for *our* particular environments.
+
+
+## Create tables filled with random data
+
+    ./backend/init_db.py
