@@ -75,10 +75,10 @@ def add_category():
         c = flask.request.get_json()
 
         # If object isn't a category, bad request
-        if ('name' not in e):
+        if ('name' not in c):
             flask.abort(400)
 
-        db_cat = storage.Category(name=e['name'])
+        db_cat = storage.Category(name=c['name'])
         db_cat.save()
 
 
