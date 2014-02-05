@@ -5,7 +5,7 @@ The following document assumes a Debian GNU/Linux operating system.
 
 Install necessary packages:
 
-    sudo apt-get install python2.7 python-pip mysql-server mysql-client mysql-workbench git
+    sudo apt-get install python2.7 python2.7-dev python-pip mysql-server mysql-client libmysqlclient-dev mysql-workbench git
     
 Unless otherwise specified, all passwords are `redteam` on the development environment.
 
@@ -13,7 +13,23 @@ The git repository currently resides at `https://github.com/dranov/one-expense`
 
 Backend framework:
 
-    sudo pip install flask
+    sudo pip install flask peewee MYSQL-python faker 
+
+
+## Configure MySQL
+
+Edit `/etc/mysql/my.cnf` and set `bind-address = 0.0.0.0` to tell MySQL to listen on all interfaces.
+
+Make it possible to connect to user `root` from `192.168.0.100`. Replace `192.168.0.100` with your IP.
+
+    $ mysql -u root -p
+    Enter password:
+
+    mysql> use mysql
+
+    mysql> GRANT ALL ON *.* to root@'192.168.0.100' IDENTIFIED BY 'redteam'; 
+
+    mysql> FLUSH PRIVILEGES;
     
 
 ## Clone the repo
