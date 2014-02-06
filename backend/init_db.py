@@ -12,9 +12,24 @@ oxp.storage.Category.create_table()
 
 fake = faker.Faker()
 
+# Random color
+def get_random_color():
+    color = '#'
+    for i in range(6):
+        value = random.randint(0,15)
+        if value <= 9:
+            color += chr(ord('0')+value)
+        else:
+            value -= 10
+            color += chr(ord('a')+value)
+            
+    return color
+        
+            
+
 # Add fake categories
 for cat in range(NUM_FAKE_CATEGORIES):
-    cat = oxp.storage.Category(name=fake.bs())
+    cat = oxp.storage.Category(name=fake.bs(), color=get_random_color())
     cat.save()
 
 

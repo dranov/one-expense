@@ -15,6 +15,7 @@ class Expense(peewee.Model):
 
 class Category(peewee.Model):
     name = peewee.TextField()
+    color = peewee.TextField()
 
     class Meta:
         database = db

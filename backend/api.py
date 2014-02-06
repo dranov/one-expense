@@ -80,10 +80,10 @@ def add_category():
         c = flask.request.get_json()
 
         # If object isn't a category, bad request
-        if (c is None) or ('name' not in c):
+        if (c is None) or ('name' not in c) or ('color' not in c):
             flask.abort(400)
 
-        db_cat = storage.Category(name=c['name'])
+        db_cat = storage.Category(name=c['name'], color=c['color'])
         db_cat.save()
 
 
@@ -100,7 +100,7 @@ def get_all_categories():
         categories = dict()
 
         for c in storage.Category.select():
-            categories[c.id] = {'name': c.name}
+            categories[c.id] = {'name': c.name , 'color': c.color }
 
         return get_request_response(json.dumps(categories))
 
