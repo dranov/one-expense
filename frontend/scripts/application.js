@@ -4,7 +4,7 @@ var application = angular.module('application', ['ngRoute', 'ngResource', 'ui.bo
 application.config(function($routeProvider) {
 	$routeProvider
 		.when('/', {
-			controller: 'catController',
+			controller: 'catListController',
 			templateUrl: 'views/categories.html'
 		})
 		.otherwise({ redirectTo: '/' });

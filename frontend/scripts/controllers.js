@@ -1,7 +1,7 @@
 var controllers = angular.module('controllers', []);
 
 /* === Path controller on '/', loads all the categories from backend. === */
-controllers.controller('catController', function ($scope, Categories) {
+controllers.controller('catListController', function ($scope, Categories) {
 	$scope.categories = [];
 
 	Categories.get(function (response) {
@@ -23,11 +23,22 @@ controllers.controller('catModalController', function ($scope, $modal) {
 		var modalInstance = $modal.open({
 			templateUrl: '/templates/add_category_modal.html',
 			controller: 'catModalInstanceController',
-			resolve: { }
+			resolve: { },
+			windowClass: 'modal'
 		});
 
 		modalInstance.result.then(function (category) {
-			category.$save();
+			category.$save(function (value, headers) {
+				console.log('Category \'' + category.name + '\' saved.');
+
+				$scope.categories.push({
+					'index' : $scope.categories.length,
+					'name' : category.name,
+					'color' : category.color
+				});
+			}, function (response) {
+				console.log('Category \'' + category.name + '\' could not be saved: httpResponse ' + response);
+			});
 		}, function () {
 			//dismiss modal code (cancel)
 		});
@@ -38,11 +49,21 @@ controllers.controller('catModalInstanceController', function ($scope, $modalIns
 	$scope.cat = {};
 
 	$scope.ok = function () {
-		var category = new Category();
-		category.name = $scope.cat.name;
-		category.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+		var valid = true;
 
-		$modalInstance.close(category);
+		var name = $scope.cat.name;
+		if(name === undefined) valid = false;
+		else if(name.length == 0) valid = false;
+
+		if(valid) {
+			var category = new Category();
+			category.name = name;
+			category.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+
+			$modalInstance.close(category);
+		} else {
+
+		}
 	};
 
 	$scope.cancel = function () {

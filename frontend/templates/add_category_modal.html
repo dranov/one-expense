@@ -1,5 +1,6 @@
 <div id="cat-modal-body" class="modal-body">
-	<input id="cat-modal-name" type="text" placeholder="Name" ng-model="cat.name" />
+	<input id="cat-modal-name" type="text" maxlength="20" placeholder="Name" ng-model="cat.name" />
+	<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)"> {{ alert.msg }} </alert>
 </div>
 
 <div id="cat-modal-footer" class="modal-footer">
