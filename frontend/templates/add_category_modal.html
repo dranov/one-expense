@@ -1,9 +1,11 @@
-<div id="cat-modal-body" class="modal-body">
-	<input id="cat-modal-name" type="text" maxlength="20" placeholder="Name" ng-model="cat.name" />
-	<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)"> {{ alert.msg }} </alert>
-</div>
+<div class="container-fluid">
+	<div id="cat-modal-body" class="modal-body">
+		<input id="cat-modal-name" type="text" maxlength="20" placeholder="Name" ng-model="cat.name" />
+		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)"> {{ alert.msg }} </alert>
+	</div>
 
-<div id="cat-modal-footer" class="modal-footer">
-	<button class="btn btn-primary btn-sm" ng-click="ok()"> OK </button>
-	<button class="btn btn-warning btn-sm" ng-click="cancel()"> Cancel </button>
+	<div id="cat-modal-footer" class="modal-footer row">
+		<button class="btn btn-primary btn-sm col-md-6 col-xs-6" ng-click="ok()"> OK </button>
+		<button class="btn btn-warning btn-sm col-md-6 col-xs-6" ng-click="cancel()"> Cancel </button>
+	</div>
 </div>
