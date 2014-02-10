@@ -1,11 +1,9 @@
-<div class="container-fluid">
-	<div id="cat-modal-body" class="modal-body">
-		<input id="cat-modal-name" type="text" maxlength="20" placeholder="Name" ng-model="cat.name" />
-		<alert ng-repeat="alert in alerts" type="alert.type" close="closeAlert($index)"> {{ alert.msg }} </alert>
+<div id="cat-modal" class="container-fluid">
+	<div class="modal-body row">
+		<input id="cat-modal-name" class="col-xs-12" maxlength="20" placeholder="Category name" ng-model="cat.name" />
 	</div>
-
-	<div id="cat-modal-footer" class="modal-footer row">
-		<button class="btn btn-primary btn-sm col-md-6 col-xs-6" ng-click="ok()"> OK </button>
-		<button class="btn btn-warning btn-sm col-md-6 col-xs-6" ng-click="cancel()"> Cancel </button>
+	<div class="modal-footer row">
+		<button id="cat-modal-ok" class="col-xs-6" ng-click="ok()"> OK </button>
+		<button id="cat-modal-cancel" class="col-xs-6" ng-click="cancel()"> Cancel </button>
 	</div>
 </div>
