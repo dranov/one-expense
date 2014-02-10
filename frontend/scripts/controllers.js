@@ -10,7 +10,8 @@ controllers.controller('catListController', function ($scope, Categories) {
 				$scope.categories.push({ 
 					'index' : arg, 
 					'name' : response[arg].name, 
-					'color' : response[arg].color 
+					'color' : response[arg].color,
+					'size' : Math.floor(Math.random() * 80) + 20
 				});
 			}
 		}
