@@ -1,29 +1,64 @@
 var controllers = angular.module('controllers', []);
 
-/* === Path controller on '/', loads all the categories from backend. === */
-controllers.controller('catListController', function ($scope, Categories) {
-	$scope.categories = [];
+controllers.controller('LoadCtrl', function ($scope, Categories, Expenses) {
+	if(sessionStorage['categories'] === null || sessionStorage['categories'] === undefined) {
+		this.cats = [];
+		var that = this;
 
-	Categories.get(function (response) {
-		for(arg in response) {
-    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
-				$scope.categories.push({ 
-					'index' : arg, 
-					'name' : response[arg].name, 
-					'color' : response[arg].color,
-					'size' : Math.floor(Math.random() * 80) + 20
-				});
+		Categories.get(function (response) {
+			for(arg in response) {
+	    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
+					that.cats.push({ 
+						'id' : arg, 
+						'name' : response[arg].name, 
+						'color' : response[arg].color,
+						'size' : Math.floor(Math.random() * 81) + 20
+					});
+				}
 			}
-		}
-	});
+
+			sessionStorage['categories'] = JSON.stringify(that.cats);
+		});
+
+		console.log('Categories loaded.');
+	}
+
+	if(sessionStorage['expenses'] === null || sessionStorage['expenses'] === undefined) {
+		this.exps = [];
+		var that = this;
+
+		Expenses.get(function (response) {
+			for(arg in response) {
+	    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
+					that.exps.push({ 
+						'id' : arg, 
+						'name' : response[arg].name, 
+						'sum' : response[arg].sum,
+						'category' : response[arg].category_id
+					});
+				}
+			}
+
+			sessionStorage['expenses'] = JSON.stringify(that.exps);
+		});
+
+		console.log('Expenses loaded.');
+	}
+});
+
+/* === Path controller on '/', loads all the categories from backend. === */
+controllers.controller('CategoriesListCtrl', function ($scope, Categories) {
+	if(sessionStorage['categories'] !== null && sessionStorage['categories'] !== undefined) {
+		$scope.categories = JSON.parse(sessionStorage['categories']);
+	}
 });
 
 /* === Controller for 'new category' button. Shows an modal when clicked. === */
-controllers.controller('catModalController', function ($scope, $modal) {
+controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
 	$scope.open = function () {
 		var modalInstance = $modal.open({
 			templateUrl: '/templates/add_category_modal.html',
-			controller: 'catModalInstanceController',
+			controller: 'NewCategoryModalInstanceCtrl',
 			resolve: { },
 			windowClass: 'modal'
 		});
@@ -32,11 +67,18 @@ controllers.controller('catModalController', function ($scope, $modal) {
 			category.$save(function (value, headers) {
 				console.log('Category \'' + category.name + '\' saved.');
 
-				$scope.categories.push({
-					'index' : $scope.categories.length,
+				var cat = {
+					'id' : $scope.categories.length,
 					'name' : category.name,
-					'color' : category.color
-				});
+					'color' : category.color,
+					'size' : Math.floor(Math.random() * 81) + 20
+				};
+
+				var cats = JSON.parse(sessionStorage['categories']);
+				cats.push(cat);
+				sessionStorage['categories'] = JSON.stringify(cats);
+
+				$scope.categories = cats;
 			}, function (response) {
 				console.log('Category \'' + category.name + '\' could not be saved: httpResponse ' + response);
 			});
@@ -46,7 +88,7 @@ controllers.controller('catModalController', function ($scope, $modal) {
 	};
 });
 
-controllers.controller('catModalInstanceController', function ($scope, $modalInstance, Category) {
+controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalInstance, Category) {
 	$scope.cat = {};
 
 	$scope.ok = function () {
@@ -70,4 +112,9 @@ controllers.controller('catModalInstanceController', function ($scope, $modalIns
 	$scope.cancel = function () {
 		$modalInstance.dismiss();
 	};
+});
+
+controllers.controller('ExpensesListCtrl', function ($scope, $routeParams, Expenses) {
+	$scope.categoryId = $routeParams.categoryId;
+	$scope.expenses = JSON.parse(sessionStorage['expenses']);
 });

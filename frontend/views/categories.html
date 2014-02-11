@@ -1,18 +1,18 @@
-<div ng-controller="catModalController">
-	<div id="header">
-		<img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'">
-		<img id="addCategory" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="open()">
-	</div>
+<div id="header" ng-controller="NewCategoryModalCtrl">
+	<img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'">
+	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="open()">
+</div>
 
-	<div id="content">
-		<div id="currentDate">January 12</div>
-		<div id="total">1814.87$</div>
+<div id="content" ng-controller="CategoriesListCtrl">
+	<div id="currentDate">January 12</div>
+	<div id="total">1814.87$</div>
 
-		<div id="categories">
-			<div class="category" index="{{ category.index }}" ng-repeat="category in categories">
+	<div id="categories">
+		<div class="category" ng-repeat="category in categories">
+			<a href="/#/category/{{ category.id }}">
 				<div class="categoryName">{{ category.name }}</div>
-				<div class="barContainer"> <div class="categoryBar" style="background: {{ category.color }}; width: {{ category.size }}%;"> {{ category.size }}$ </div> </div>
-			</div>
+				<div class="barContainer"> <div class="categoryBar" style="background: {{ category.color }}; width: {{ category.size }}%;"> {{ category.size }}$ </div>
+			</a>
 		</div>
 	</div>
 </div>

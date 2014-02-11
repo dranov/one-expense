@@ -24,7 +24,7 @@ body {
 	margin-right: auto;
 }
 
-#header #addCategory {
+#header #add {
 	float: right;
 	width: 2em;
 	height: 2em;
@@ -59,7 +59,12 @@ body {
 }
 
 #categories .category {
-	margin-top: 0.3em;
+	margin-top: 0.5em;
+}
+
+#categories .category a {
+	color: #333;
+	text-decoration: none;
 }
 
 #categories .categoryName {

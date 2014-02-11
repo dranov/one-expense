@@ -1,0 +1,13 @@
+<div id="header">
+	<img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'">
+	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'">
+</div>
+
+<div id="content">
+	<div id="expenses">
+		<div class="expense" ng-repeat="expense in expenses">
+			<div class="expenseName"> {{ expense.name }} </div>
+			<div class="expenseSum"> {{ expense.sum }} </div>
+		</div>
+	</div>
+</div>
