@@ -39,9 +39,15 @@ body {
 	margin: 1em;
 }
 
-/* --- Content - Categories --- */
 #content #currentDate {
 	display: block;
+}
+
+#content #name {
+	display: block;
+
+	text-align: center;
+	font-size: 2em;
 }
 
 #content #total {
@@ -51,6 +57,7 @@ body {
 	font-size: 2.5em;
 }
 
+/* --- Content - Categories --- */
 #categories {
 	display: block;
 	margin: 0 0.5em;
@@ -85,6 +92,18 @@ body {
 	line-height: 1.3em;
 	text-align: right;
 	padding-right: 5px;
+}
+
+/* --- Content - Expenses --- */
+#expenses {
+	display: block;
+	margin: 0 0.5em;
+
+	font-size: 1.2em;
+}
+
+#expenses .expense {
+	margin-top: 0.5em;
 }
 
 /* --- Add Category Modal --- */

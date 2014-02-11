@@ -4,10 +4,14 @@
 </div>
 
 <div id="content">
+	<div id="currentDate"> January 12 </div>
+	<div id="name"> {{ $root.categories[categoryId - 1].name }} </div>
+	<div id="total"> {{ $root.categories[categoryId - 1].total }}$ </div>
+
 	<div id="expenses">
-		<div class="expense" ng-repeat="expense in expenses">
+		<div class="expense" ng-repeat="expense in expenses | filter: { category : categoryId }">
 			<div class="expenseName"> {{ expense.name }} </div>
-			<div class="expenseSum"> {{ expense.sum }} </div>
+			<div class="expenseSum"> {{ expense.sum }}$ </div>
 		</div>
 	</div>
 </div>

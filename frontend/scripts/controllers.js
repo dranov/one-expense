@@ -1,56 +1,56 @@
 var controllers = angular.module('controllers', []);
 
-controllers.controller('LoadCtrl', function ($scope, Categories, Expenses) {
-	if(sessionStorage['categories'] === null || sessionStorage['categories'] === undefined) {
-		this.cats = [];
-		var that = this;
+controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Expenses) {
+	$rootScope.categories = [];
+	$rootScope.expenses = [];
 
-		Categories.get(function (response) {
-			for(arg in response) {
-	    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
-					that.cats.push({ 
-						'id' : arg, 
-						'name' : response[arg].name, 
-						'color' : response[arg].color,
-						'size' : Math.floor(Math.random() * 81) + 20
-					});
-				}
+	Categories.get(function (response) {
+		for(arg in response) {
+    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
+				$rootScope.categories.push({ 
+					'id' : arg, 
+					'name' : response[arg].name, 
+					'color' : response[arg].color,
+					'total' : 0
+				});
 			}
-
-			sessionStorage['categories'] = JSON.stringify(that.cats);
-		});
+		}
 
 		console.log('Categories loaded.');
-	}
+	});
 
-	if(sessionStorage['expenses'] === null || sessionStorage['expenses'] === undefined) {
-		this.exps = [];
-		var that = this;
-
-		Expenses.get(function (response) {
-			for(arg in response) {
-	    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
-					that.exps.push({ 
-						'id' : arg, 
-						'name' : response[arg].name, 
-						'sum' : response[arg].sum,
-						'category' : response[arg].category_id
-					});
-				}
+	Expenses.get(function (response) {
+		for(arg in response) {
+    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
+				$rootScope.expenses.push({ 
+					'id' : arg, 
+					'name' : response[arg].name, 
+					'sum' : response[arg].sum,
+					'category' : response[arg].category_id
+				});
 			}
-
-			sessionStorage['expenses'] = JSON.stringify(that.exps);
-		});
+		}
 
 		console.log('Expenses loaded.');
-	}
+
+		$scope.total = 0;
+		$scope.maxTotal = 0;
+		for(var i = 0; i < $rootScope.expenses.length; i++) {
+			var expense = $rootScope.expenses[i];
+			$scope.total += expense.sum;
+
+			var cat = $rootScope.categories[expense.category - 1];
+			cat.total += expense.sum;
+			if(cat.total > $scope.maxTotal) {
+				$scope.maxTotal = cat.total;
+			}
+		}
+	});
 });
 
 /* === Path controller on '/', loads all the categories from backend. === */
-controllers.controller('CategoriesListCtrl', function ($scope, Categories) {
-	if(sessionStorage['categories'] !== null && sessionStorage['categories'] !== undefined) {
-		$scope.categories = JSON.parse(sessionStorage['categories']);
-	}
+controllers.controller('CategoriesListCtrl', function ($scope, $rootScope, Categories) {
+	$scope.categories = $rootScope.categories;
 });
 
 /* === Controller for 'new category' button. Shows an modal when clicked. === */
@@ -73,12 +73,7 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
 					'color' : category.color,
 					'size' : Math.floor(Math.random() * 81) + 20
 				};
-
-				var cats = JSON.parse(sessionStorage['categories']);
-				cats.push(cat);
-				sessionStorage['categories'] = JSON.stringify(cats);
-
-				$scope.categories = cats;
+				$scope.categories.push(cat);
 			}, function (response) {
 				console.log('Category \'' + category.name + '\' could not be saved: httpResponse ' + response);
 			});
@@ -114,7 +109,7 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
 	};
 });
 
-controllers.controller('ExpensesListCtrl', function ($scope, $routeParams, Expenses) {
+controllers.controller('ExpensesListCtrl', function ($scope, $rootScope, $routeParams, Expenses) {
 	$scope.categoryId = $routeParams.categoryId;
-	$scope.expenses = JSON.parse(sessionStorage['expenses']);
+	$scope.expenses = $rootScope.expenses;
 });
