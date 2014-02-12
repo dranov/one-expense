@@ -3,17 +3,17 @@
 	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="open()">
 </div>
 
-<div id="content" ng-controller="CategoriesListCtrl">
+<div id="head">
 	<div id="currentDate"> January 12 </div>
 	<div id="total"> {{ total }}$ </div>
+</div>
 
-	<div id="categories">
-		<div class="category" ng-repeat="category in categories | orderBy : 'total' : true">
-			<a href="/#/category/{{ category.id }}">
-				<div class="categoryName"> {{ category.name }} </div>
-				<div class="barContainer"> <div class="categoryBar" style="background: {{ category.color }}; width: {{ (category.total / maxTotal) * 100 }}%;"> {{ category.total }}$ </div>
-			</a>
-		</div>
+<div id="categories">
+	<div class="category" ng-repeat="category in categories | orderBy : 'total' : true">
+		<a href="/#/category/{{ category.id }}">
+			<div class="categoryName"> {{ category.name }} </div>
+			<div class="barContainer"> <div class="categoryBar" style="background: {{ category.color }}; width: {{ (category.total / maxTotal) * 100 }}%;"> {{ category.total }}$ </div>
+		</a>
 	</div>
 </div>
 

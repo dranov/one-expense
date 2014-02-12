@@ -34,23 +34,23 @@ body {
 }
 
 /* --- Content --- */
-#content {
+#head {
 	display: block;
-	margin: 1em;
+	padding: 1em;
 }
 
-#content #currentDate {
+#head #currentDate {
 	display: block;
 }
 
-#content #name {
+#head #name {
 	display: block;
 
 	text-align: center;
 	font-size: 2em;
 }
 
-#content #total {
+#head #total {
 	display: block;
 
 	text-align: center;
@@ -60,7 +60,7 @@ body {
 /* --- Content - Categories --- */
 #categories {
 	display: block;
-	margin: 0 0.5em;
+	margin: 1em 1.5em;
 
 	font-size: 1.2em;
 }
@@ -92,18 +92,6 @@ body {
 	line-height: 1.3em;
 	text-align: right;
 	padding-right: 5px;
-}
-
-/* --- Content - Expenses --- */
-#expenses {
-	display: block;
-	margin: 0 0.5em;
-
-	font-size: 1.2em;
-}
-
-#expenses .expense {
-	margin-top: 0.5em;
 }
 
 /* --- Add Category Modal --- */
@@ -150,4 +138,33 @@ body {
 
 #cat-modal-cancel {
 	border-bottom-right-radius: 0.2em;
+}
+
+/* --- Content - Expenses --- */
+#expenses {
+	display: block;
+	margin: 1em 1.5em;
+
+	font-size: 1.2em;
+}
+
+#expenses .expense {
+	margin-top: 0.5em;
+}
+
+#expenses .expense hr {
+	margin: 0.3em 0;
+	border: 0;
+	height: 1px;
+	background: #333;
+	background-image: -webkit-linear-gradient(left, #ddd, #999, #ddd);
+	background-image: -moz-linear-gradient(left, #ddd, #999, #ddd);
+	background-image: -ms-linear-gradient(left, #ddd, #999, #ddd);
+	background-image: -o-linear-gradient(left, #ddd, #999, #ddd);
+}
+
+#expenses .expense:last-child hr {
+	margin: 0;
+	border: 0;
+	height: 0px;
 }
