@@ -12,3 +12,7 @@ services.factory('Category', function ($resource) {
 services.factory('Expenses', function ($resource) {
     return $resource('http://192.168.0.102:5000/api/expenses', {}, {});
 });
+
+services.factory('Expense', function ($resource) {
+    return $resource('http://192.168.0.102:5000/api/expense', {}, {});
+});

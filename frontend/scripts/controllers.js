@@ -60,7 +60,7 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
 			templateUrl: '/templates/add_category_modal.html',
 			controller: 'NewCategoryModalInstanceCtrl',
 			resolve: { },
-			windowClass: 'modal'
+			windowClass: 'add-modal'
 		});
 
 		modalInstance.result.then(function (category) {
@@ -112,4 +112,70 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
 controllers.controller('ExpensesListCtrl', function ($scope, $rootScope, $routeParams, Expenses) {
 	$scope.categoryId = $routeParams.categoryId;
 	$scope.expenses = $rootScope.expenses;
+});
+
+/* === Controller for 'new category' button. Shows an modal when clicked. === */
+controllers.controller('NewExpenseModalCtrl', function ($scope, $modal) {
+	$scope.open = function () {
+		var modalInstance = $modal.open({
+			templateUrl: '/templates/add_expense_modal.html',
+			controller: 'NewExpenseModalInstanceCtrl',
+			resolve: { 
+				categoryId : function () {
+					return $scope.categoryId;
+				} 
+			},
+			windowClass: 'add-modal'
+		});
+
+		modalInstance.result.then(function (expense) {
+			expense.$save(function (value, headers) {
+				console.log('Expense \'' + expense.name + '\' saved.');
+
+				var exp = {
+					'id' : $scope.expenses.length,
+					'name' : expense.name,
+					'sum' : expense.sum,
+					'category' : expense.category_id
+				};
+				$scope.expenses.push(exp);
+			}, function (response) {
+				console.log('Expense \'' + expense.name + '\' could not be saved: httpResponse ' + response);
+			});
+		}, function () {
+			//dismiss modal code (cancel)
+		});
+	};
+});
+
+controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $modalInstance, categoryId, Expense) {
+	$scope.exp = {};
+
+	$scope.ok = function () {
+		var valid = true;
+
+		var name = $scope.exp.name;
+		if(name === undefined) valid = false;
+		else if(name.length == 0) valid = false;
+
+		var sum = $scope.exp.sum;
+		if(sum === undefined) valid = false;
+		else if(sum.length == 0) valid = false;
+
+		if(valid) {
+			var expense = new Expense();
+			expense.name = name;
+			expense.sum = sum;
+			expense.category_id = categoryId;
+			alert(categoryId);
+
+			$modalInstance.close(expense);
+		} else {
+
+		}
+	};
+
+	$scope.cancel = function () {
+		$modalInstance.dismiss();
+	};
 });

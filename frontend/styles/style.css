@@ -94,52 +94,6 @@ body {
 	padding-right: 5px;
 }
 
-/* --- Add Category Modal --- */
-#cat-modal .modal-footer {
-	margin-top: 0;
-	padding: 0;
-
-	border-bottom-left-radius: 0.2em;
-	border-bottom-right-radius: 0.2em;
-}
-
-#cat-modal .modal-body {
-	margin: 0;
-	padding: 10px 5px;
-}
-
-#cat-modal-name {
-	border: 0;
-
-	background: rgba(0, 0, 0, 0);
-
-	text-align: center;
-	font-size: 2em;
-}
-
-#cat-modal button {
-	border: 0;
-	height: 3em;
-
-	color: #fff;
-}
-
-#cat-modal button {
-	background: #9b0000;
-}
-
-#cat-modal button:active {
-	background: #7f0000;
-}
-
-#cat-modal-ok {
-	border-bottom-left-radius: 0.2em;
-}
-
-#cat-modal-cancel {
-	border-bottom-right-radius: 0.2em;
-}
-
 /* --- Content - Expenses --- */
 #expenses {
 	display: block;
@@ -167,4 +121,60 @@ body {
 	margin: 0;
 	border: 0;
 	height: 0px;
+}
+
+/* --- Add Modal --- */
+.add-modal .modal-footer {
+	margin-top: 0 !important;
+	padding: 0 !important;
+
+	border-bottom-left-radius: 0.2em;
+	border-bottom-right-radius: 0.2em;
+}
+
+.add-modal .modal-body {
+	margin: 0;
+	padding: 10px 5px;
+}
+
+.add-modal  #name {
+	border: 0;
+
+	background: rgba(0, 0, 0, 0);
+
+	text-align: center;
+	font-size: 2em;
+}
+
+.add-modal input {
+	border: 0;
+	margin-top: 0.2em;
+	background: rgba(0, 0, 0, 0);
+
+	text-align: center;
+	font-size: 2em;
+}
+
+.add-modal input:first-child {
+	margin-top: 0;
+}
+
+.add-modal button {
+	border: 0;
+	height: 3em;
+
+	color: #fff;
+	background: #9b0000;
+}
+
+.add-modal button:active {
+	background: #7f0000;
+}
+
+.add-modal #ok {
+	border-bottom-left-radius: 0.2em;
+}
+
+.add-modal #cancel {
+	border-bottom-right-radius: 0.2em;
 }

@@ -1,10 +1,10 @@
-<div id="header">
+<div id="header" ng-controller="NewExpenseModalCtrl">
 	<img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'">
-	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'">
+	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="open()">
 </div>
 
 <div id="content">
-	<div id="head" style="background: {{ $root.categories[categoryId - 1].color }};" ng-class="{ 'bright' : #root.categories[categoryId - 1].color < #999 }">
+	<div id="head" style="background: {{ $root.categories[categoryId - 1].color }};">
 		<div id="currentDate"> January 12 </div>
 		<div id="name"> {{ $root.categories[categoryId - 1].name }} </div>
 		<div id="total"> {{ $root.categories[categoryId - 1].total }}$ </div>
