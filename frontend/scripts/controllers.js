@@ -167,7 +167,6 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $modalIn
 			expense.name = name;
 			expense.sum = sum;
 			expense.category_id = categoryId;
-			alert(categoryId);
 
 			$modalInstance.close(expense);
 		} else {
