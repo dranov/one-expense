@@ -84,11 +84,10 @@ def add_category():
             flask.abort(400)
 
         # Don't accept categories with names that already exist
-        if storage.Category.select(Category.name).having(Category.name ==
+        if storage.Category.select(storage.Category.name).where(storage.Category.name ==
                 c['name']).count() != 0:
 
-            return make_response(get_request_response('A category named\
-                \'{0}\' already exists.'.format(c['name'])), 400)
+            return make_response(get_request_response('A category named \'{0}\' already exists.'.format(c['name'])), 400)
 
         db_cat = storage.Category(name=c['name'], color=c['color'])
         db_cat.save()
