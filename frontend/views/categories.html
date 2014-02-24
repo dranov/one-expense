@@ -12,7 +12,9 @@
 	<div class="category" ng-repeat="category in categories | orderBy : 'total' : true">
 		<a href="/#/category/{{ category.id }}">
 			<div class="categoryName"> {{ category.name }} </div>
-			<div class="barContainer"> <div class="categoryBar" style="background: {{ category.color }}; width: {{ (category.total / maxTotal) * 100 }}%;"> {{ category.total }}$ </div>
+			<div class="barContainer"> <div class="categoryBar"
+                    style="background: {{ category.color }}; width: {{
+                ((category.total / maxTotal) * 100) || 0}}%;"> {{ category.total }}$ </div>
 		</a>
 	</div>
 </div>

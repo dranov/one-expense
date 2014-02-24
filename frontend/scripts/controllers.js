@@ -71,7 +71,7 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
 					'id' : $scope.categories.length,
 					'name' : category.name,
 					'color' : category.color,
-					'size' : Math.floor(Math.random() * 81) + 20
+					'total' : 0
 				};
 				$scope.categories.push(cat);
 			}, function (response) {
@@ -88,10 +88,20 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
 
 	$scope.ok = function () {
 		var valid = true;
+        var reason = "";
 
 		var name = $scope.cat.name;
-		if(name === undefined) valid = false;
-		else if(name.length == 0) valid = false;
+		if(name === undefined || name.length === 0) {
+            valid = false;
+            reason = 'Category name cannot be empty';
+        }
+
+        for(var i = 0; i < $scope.categories.length; i++) {
+            if (name === $scope.categories[i].name) {
+                valid = false;
+                reason = 'A category named \'' + name + '\' already exists.'
+            }
+        }
 
 		if(valid) {
 			var category = new Category();
@@ -100,7 +110,8 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
 
 			$modalInstance.close(category);
 		} else {
-
+            alert(reason);
+            $modalInstance.dismiss();
 		}
 	};
 
