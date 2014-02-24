@@ -71,7 +71,7 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
 					'id' : $scope.categories.length,
 					'name' : category.name,
 					'color' : category.color,
-					'size' : Math.floor(Math.random() * 81) + 20
+					'total' : 0
 				};
 				$scope.categories.push(cat);
 			}, function (response) {
