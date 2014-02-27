@@ -1,61 +1,77 @@
 var controllers = angular.module('controllers', []);
 
+/*-- Loading Controller: loads ALL expenses and categories on page load/reload --*/
 controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Expenses) {
-	$rootScope.categories = [];
-	$rootScope.expenses = [];
+	// Using $rootScope to have access to categories and expenses from anywhere in app.
+	$rootScope.categories = new Object();
+	$rootScope.expenses = new Object();
 
+	// Categories is a service / factory that will provide all the categories from the server as an object.
 	Categories.get(function (response) {
 		for(arg in response) {
     		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
-				$rootScope.categories.push({ 
+				$rootScope.categories[arg] = { 
 					'id' : arg, 
 					'name' : response[arg].name, 
 					'color' : response[arg].color,
 					'total' : 0
-				});
+				};
 			}
 		}
 
 		console.log('Categories loaded.');
 	});
 
+	// Expenses is a service / factory that will provide all the expenses from the server as an object.
 	Expenses.get(function (response) {
 		for(arg in response) {
     		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
-				$rootScope.expenses.push({ 
+				$rootScope.expenses[arg] = { 
 					'id' : arg, 
 					'name' : response[arg].name, 
 					'sum' : response[arg].sum,
 					'category' : response[arg].category_id
-				});
+				};
 			}
 		}
 
 		console.log('Expenses loaded.');
-
-		$scope.total = 0;
-		$scope.maxTotal = 0;
-		for(var i = 0; i < $rootScope.expenses.length; i++) {
-			var expense = $rootScope.expenses[i];
-			$scope.total += expense.sum;
-
-			var cat = $rootScope.categories[expense.category - 1];
-			cat.total += expense.sum;
-			if(cat.total > $scope.maxTotal) {
-				$scope.maxTotal = cat.total;
-			}
-		}
 	});
 });
 
-/* === Path controller on '/', loads all the categories from backend. === */
+/*-- Categories Controller: used on "/#/" page --*/
 controllers.controller('CategoriesListCtrl', function ($scope, $rootScope, Categories) {
-	$scope.categories = $rootScope.categories;
+	$scope.total = 0;
+	$scope.maxTotal = 0;
+
+	// Compute the total value of every expense and the most expensive category
+	$rootScope.$watchCollection('expenses', function() {
+		for(key in $rootScope.categories) {
+			$rootScope.categories[key].total = 0;
+		}
+
+		for(key in $rootScope.expenses) {
+			var expense = $rootScope.expenses[key];
+			var cat = $rootScope.categories[expense.category];
+			cat.total += expense.sum;
+		}
+
+		var total = 0;
+		var maxTotal = 0;
+		for(key in $rootScope.categories) {
+			var cat = $rootScope.categories[key];
+			total += cat.total;
+			if(cat.total > maxTotal)
+				maxTotal = cat.total;
+		}
+		$scope.total = total;
+		$scope.maxTotal = maxTotal;
+	});
 });
 
-/* === Controller for 'new category' button. Shows an modal when clicked. === */
-controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
-	$scope.open = function () {
+controllers.controller('NewCategoryModalCtrl', function ($scope, $rootScope, $modal) {
+	// Opens a new modal for adding a new category
+	$scope.newCategory = function() {
 		var modalInstance = $modal.open({
 			templateUrl: '/templates/add_category_modal.html',
 			controller: 'NewCategoryModalInstanceCtrl',
@@ -63,6 +79,7 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
 			windowClass: 'add-modal'
 		});
 
+		// Executed at modal close: first function at ok, second at cancel
 		modalInstance.result.then(function (category) {
 			category.$save(function (value, headers) {
 				console.log('Category \'' + category.name + '\' saved.');
@@ -73,22 +90,21 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $modal) {
 					'color' : category.color,
 					'total' : 0
 				};
-				$scope.categories.push(cat);
+				$rootScope.categories[cat.id] = cat;
 			}, function (response) {
-				console.log('Category \'' + category.name + '\' could not be saved: httpResponse ' + response);
+				console.log('Category \'' + category.name + '\' could not be saved: response ' + response);
 			});
-		}, function () {
-			//dismiss modal code (cancel)
-		});
-	};
+		}, function () { });
+	}
 });
 
+/* Category Modal Controller: handles the modal behaviour */
 controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalInstance, Category) {
 	$scope.cat = {};
 
 	$scope.ok = function () {
 		var valid = true;
-        var reason = "";
+        var reason = '';
 
 		var name = $scope.cat.name;
 		if(name === undefined || name.length === 0) {
@@ -96,8 +112,9 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
             reason = 'Category name cannot be empty';
         }
 
-        for(var i = 0; i < $scope.categories.length; i++) {
-            if (name === $scope.categories[i].name) {
+        for(key in $rootScope.categories) {
+        	var cat = $rootScope.categories[key];
+            if (name === cat.name) {
                 valid = false;
                 reason = 'A category named \'' + name + '\' already exists.'
             }
@@ -120,14 +137,14 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
 	};
 });
 
+/*-- Expenses Controller: used on "/#/category/id" pages --*/
 controllers.controller('ExpensesListCtrl', function ($scope, $rootScope, $routeParams, Expenses) {
 	$scope.categoryId = $routeParams.categoryId;
-	$scope.expenses = $rootScope.expenses;
 });
 
-/* === Controller for 'new category' button. Shows an modal when clicked. === */
-controllers.controller('NewExpenseModalCtrl', function ($scope, $modal) {
-	$scope.open = function () {
+controllers.controller('NewExpenseModalCtrl', function ($scope, $rootScope, $modal) {
+	// Opens a new modal for adding a new expense in this / specific category
+	$scope.newExpense = function () {
 		var modalInstance = $modal.open({
 			templateUrl: '/templates/add_expense_modal.html',
 			controller: 'NewExpenseModalInstanceCtrl',
@@ -139,6 +156,7 @@ controllers.controller('NewExpenseModalCtrl', function ($scope, $modal) {
 			windowClass: 'add-modal'
 		});
 
+		// Executed at modal close: first function at ok, second at cancel
 		modalInstance.result.then(function (expense) {
 			expense.$save(function (value, headers) {
 				console.log('Expense \'' + expense.name + '\' saved.');
@@ -149,18 +167,18 @@ controllers.controller('NewExpenseModalCtrl', function ($scope, $modal) {
 					'sum' : expense.sum,
 					'category' : expense.category_id
 				};
-				$scope.expenses.push(exp);
+				$rootScope.expenses[exp.id] = exp;
 			}, function (response) {
 				console.log('Expense \'' + expense.name + '\' could not be saved: httpResponse ' + response);
 			});
-		}, function () {
-			//dismiss modal code (cancel)
-		});
+		}, function () { });
 	};
 });
 
-controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $modalInstance, categoryId, Expense) {
+/* Expense Modal Controller: handles the modal behaviour */
+controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootScope, $modalInstance, categoryId, Expense) {
 	$scope.exp = {};
+	$scope.exp.category = $rootScope.categories[categoryId];
 
 	$scope.ok = function () {
 		var valid = true;
@@ -173,11 +191,13 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $modalIn
 		if(sum === undefined) valid = false;
 		else if(sum.length == 0) valid = false;
 
+		if($scope.exp.category === undefined) valid = false;
+
 		if(valid) {
 			var expense = new Expense();
 			expense.name = name;
-			expense.sum = sum;
-			expense.category_id = categoryId;
+			expense.sum = parseFloat(sum);
+			expense.category_id = $scope.exp.category.id;
 
 			$modalInstance.close(expense);
 		} else {

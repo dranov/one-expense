@@ -132,31 +132,33 @@ body {
 	border-bottom-right-radius: 0.2em;
 }
 
-.add-modal .modal-body {
-	margin: 0;
-	padding: 10px 5px;
-}
+.add-modal .label {
+	display: table-cell;
+	height: 2em;
 
-.add-modal  #name {
-	border: 0;
+	color: #000;
 
-	background: rgba(0, 0, 0, 0);
-
-	text-align: center;
-	font-size: 2em;
+	line-height: 2.2em;
+	font-size: 1.5em;
+	font-weight: normal;
 }
 
 .add-modal input {
-	border: 0;
+	border: 1px solid #CCC;
 	margin-top: 0.2em;
+
 	background: rgba(0, 0, 0, 0);
 
-	text-align: center;
 	font-size: 2em;
 }
 
 .add-modal input:first-child {
 	margin-top: 0;
+}
+
+.add-modal select {
+	height: 2.5em;
+	margin-top: 1em;
 }
 
 .add-modal button {

@@ -1,6 +1,6 @@
-<div id="header" ng-controller="NewCategoryModalCtrl">
-	<img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'">
-	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="open()">
+<div id="header" ng-controller="NewExpenseModalCtrl">
+	<a href="/#/"><img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'"></a>
+	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="newExpense()">
 </div>
 
 <div id="head">
@@ -9,12 +9,10 @@
 </div>
 
 <div id="categories">
-	<div class="category" ng-repeat="category in categories | orderBy : 'total' : true">
+	<div class="category" ng-repeat="category in $root.categories | orderObjectBy : 'total' : true">
 		<a href="/#/category/{{ category.id }}">
 			<div class="categoryName"> {{ category.name }} </div>
-			<div class="barContainer"> <div class="categoryBar"
-                    style="background: {{ category.color }}; width: {{
-                ((category.total / maxTotal) * 100) || 0}}%;"> {{ category.total }}$ </div>
+			<div class="barContainer"> <div class="categoryBar" style="background: {{ category.color }}; width: {{ ((category.total / maxTotal) * 100) || 0 }}%;"> {{ category.total }}$ </div>
 		</a>
 	</div>
 </div>

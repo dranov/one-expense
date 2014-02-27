@@ -1,6 +1,9 @@
 <div class="container-fluid">
-	<div class="modal-body row">
-		<input id="name" class="col-xs-12" maxlength="20" placeholder="Category name" ng-model="cat.name" />
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-xs-2 label">Name: </div>
+			<input class="col-xs-10" maxlength="50" ng-model="cat.name" />
+		</div>
 	</div>
 	<div class="modal-footer row">
 		<button id="ok" class="col-xs-6" ng-click="ok()"> OK </button>

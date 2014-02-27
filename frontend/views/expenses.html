@@ -1,17 +1,17 @@
 <div id="header" ng-controller="NewExpenseModalCtrl">
-	<img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'">
-	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="open()">
+	<a href="/#/"><img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'"></a>
+	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="newExpense()">
 </div>
 
 <div id="content">
-	<div id="head" style="background: {{ $root.categories[categoryId - 1].color }};">
+	<div id="head" style="background: {{ $root.categories[categoryId].color }};">
 		<div id="currentDate"> January 12 </div>
-		<div id="name"> {{ $root.categories[categoryId - 1].name }} </div>
-		<div id="total"> {{ $root.categories[categoryId - 1].total }}$ </div>
+		<div id="name"> {{ $root.categories[categoryId].name }} </div>
+		<div id="total"> {{ $root.categories[categoryId].total }}$ </div>
 	</div>
 
 	<div id="expenses">
-		<div class="expense" ng-repeat="expense in expenses | filter: { category : categoryId }">
+		<div class="expense" ng-repeat="expense in expenses | filterObject: { category : categoryId }">
 			<div class="expenseName"> {{ expense.name }} </div>
 			<div class="expenseSum"> {{ expense.sum }}$ </div>
 			<hr>
