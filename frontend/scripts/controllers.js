@@ -179,21 +179,28 @@ controllers.controller('NewExpenseModalCtrl', function ($scope, $rootScope, $mod
 controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootScope, $modalInstance, categoryId, Expense) {
 	$scope.exp = {};
 	$scope.exp.category = $rootScope.categories[categoryId];
+	$scope.alerts = [];
 
 	$scope.ok = function () {
-		var valid = true;
+		$scope.alerts = [];
+
+		var validName = true;
+		var validValue = true;
+		var validCategory = true;
 
 		var name = $scope.exp.name;
-		if(name === undefined) valid = false;
-		else if(name.length == 0) valid = false;
+		if(name === undefined) validName = false;
+		else if(name.length == 0) validName = false;
 
 		var sum = $scope.exp.sum;
-		if(sum === undefined) valid = false;
-		else if(sum.length == 0) valid = false;
+		if(sum === undefined) validValue = false;
+		else if(sum.length == 0) validValue = false;
 
-		if($scope.exp.category === undefined) valid = false;
+		if($scope.exp.category === undefined) validCategory = false;
+		else if($scope.exp.category === '') validCategory = false;
+		else if($scope.exp.category === null) validCategory = false;
 
-		if(valid) {
+		if(validName && validValue && validCategory) {
 			var expense = new Expense();
 			expense.name = name;
 			expense.sum = parseFloat(sum);
@@ -201,7 +208,9 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 
 			$modalInstance.close(expense);
 		} else {
-
+			if(!validName) $scope.alerts.push({ 'type' : 'danger', 'message' : 'Please enter a valid name.'});
+			if(!validValue) $scope.alerts.push({ 'type' : 'danger', 'message' : 'Please enter a valid value.'});
+			if(!validCategory) $scope.alerts.push({ 'type' : 'danger', 'message' : 'Please select a category.'});
 		}
 	};
 

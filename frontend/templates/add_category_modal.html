@@ -4,6 +4,9 @@
 			<div class="col-xs-2 label">Name: </div>
 			<input class="col-xs-10" maxlength="50" ng-model="cat.name" />
 		</div>
+		<div class="alerts row">
+		<alert ng-repeat="alert in alerts" type="alert.type">{{ alert.message }}</alert>
+		</div>
 	</div>
 	<div class="modal-footer row">
 		<button id="ok" class="col-xs-6" ng-click="ok()"> OK </button>

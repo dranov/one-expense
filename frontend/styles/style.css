@@ -143,6 +143,15 @@ body {
 	font-weight: normal;
 }
 
+.add-modal .alerts .alert {
+	margin: 0.5em 0 0 0;
+	padding: 0.5em 1em;
+}
+
+.add-modal .alerts .alert:first-child {
+	margin-top: 1.5em;
+}
+
 .add-modal input {
 	border: 1px solid #CCC;
 	margin-top: 0.2em;
