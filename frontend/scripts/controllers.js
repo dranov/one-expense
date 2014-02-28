@@ -218,3 +218,12 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 		$modalInstance.dismiss();
 	};
 });
+
+var currentdate = function()
+{
+	var mydate=new Date();
+	var month=mydate.getMonth();
+	var daym=mydate.getDate();
+	var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+	$calendar=montharray[month]+" "+daym;
+}
