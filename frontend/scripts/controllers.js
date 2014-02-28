@@ -22,6 +22,14 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 		console.log('Categories loaded.');
 	});
 
+    var currentdate = (function() {
+        var mydate=new Date();
+        var month=mydate.getMonth();
+        var daym=mydate.getDate();
+        var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
+        $rootScope. calendar=montharray[month]+" "+daym;
+    })();
+
 	// Expenses is a service / factory that will provide all the expenses from the server as an object.
 	Expenses.get(function (response) {
 		for(arg in response) {
@@ -219,11 +227,4 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 	};
 });
 
-var currentdate = function()
-{
-	var mydate=new Date();
-	var month=mydate.getMonth();
-	var daym=mydate.getDate();
-	var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-	$calendar=montharray[month]+" "+daym;
-}
+
