@@ -101,22 +101,23 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $rootScope, $mo
 /* Category Modal Controller: handles the modal behaviour */
 controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalInstance, Category) {
 	$scope.cat = {};
+	$scope.alerts = [];
 
 	$scope.ok = function () {
-		var valid = true;
-        var reason = '';
+		var validName = true;
+        var nameReason = '';
 
 		var name = $scope.cat.name;
 		if(name === undefined || name.length === 0) {
-            valid = false;
-            reason = 'Category name cannot be empty';
+            validName = false;
+            nameReason = 'Category name cannot be empty.';
         }
 
         for(key in $rootScope.categories) {
         	var cat = $rootScope.categories[key];
             if (name === cat.name) {
-                valid = false;
-                reason = 'A category named \'' + name + '\' already exists.'
+                validName = false;
+                nameReason = 'Category \'' + name + '\' already exists.'
             }
         }
 
@@ -127,8 +128,7 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
 
 			$modalInstance.close(category);
 		} else {
-            alert(reason);
-            $modalInstance.dismiss();
+			if(!validName) $scope.alerts.push({ 'type' : 'danger', 'message' : nameReason});
 		}
 	};
 
@@ -140,6 +140,19 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
 /*-- Expenses Controller: used on "/#/category/id" pages --*/
 controllers.controller('ExpensesListCtrl', function ($scope, $rootScope, $routeParams, Expenses) {
 	$scope.categoryId = $routeParams.categoryId;
+
+	// Compute the total value of every expense and the most expensive category
+	$rootScope.$watchCollection('expenses', function() {
+		for(key in $rootScope.categories) {
+			$rootScope.categories[key].total = 0;
+		}
+
+		for(key in $rootScope.expenses) {
+			var expense = $rootScope.expenses[key];
+			var cat = $rootScope.categories[expense.category];
+			cat.total += expense.sum;
+		}
+	});
 });
 
 controllers.controller('NewExpenseModalCtrl', function ($scope, $rootScope, $modal) {
@@ -185,20 +198,31 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 		$scope.alerts = [];
 
 		var validName = true;
+		var nameReason = '';
+
 		var validValue = true;
+		var valueReason = '';
+
 		var validCategory = true;
+		var categoryReason = '';
 
 		var name = $scope.exp.name;
-		if(name === undefined) validName = false;
-		else if(name.length == 0) validName = false;
+		if(name === undefined || name.length === 0) {
+			validName = false;
+			nameReason = 'Expense name cannot be empty.';
+		}
 
 		var sum = $scope.exp.sum;
-		if(sum === undefined) validValue = false;
-		else if(sum.length == 0) validValue = false;
+		if(sum === undefined || sum.length === 0) {
+			validValue = false;
+			valueReason = 'Expense value cannot be empty.';
+		}
 
-		if($scope.exp.category === undefined) validCategory = false;
-		else if($scope.exp.category === '') validCategory = false;
-		else if($scope.exp.category === null) validCategory = false;
+		var category = $scope.exp.category;
+		if(category === undefined || category === null) {
+			validCategory = false;
+			categoryReason = 'Please select a category.';
+		}
 
 		if(validName && validValue && validCategory) {
 			var expense = new Expense();
@@ -208,9 +232,9 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 
 			$modalInstance.close(expense);
 		} else {
-			if(!validName) $scope.alerts.push({ 'type' : 'danger', 'message' : 'Please enter a valid name.'});
-			if(!validValue) $scope.alerts.push({ 'type' : 'danger', 'message' : 'Please enter a valid value.'});
-			if(!validCategory) $scope.alerts.push({ 'type' : 'danger', 'message' : 'Please select a category.'});
+			if(!validName) $scope.alerts.push({ 'type' : 'danger', 'message' : nameReason});
+			if(!validValue) $scope.alerts.push({ 'type' : 'danger', 'message' : valueReason});
+			if(!validCategory) $scope.alerts.push({ 'type' : 'danger', 'message' : categoryReason});
 		}
 	};
 
