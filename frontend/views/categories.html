@@ -1,10 +1,10 @@
 <div id="header" ng-controller="NewExpenseModalCtrl">
 	<a href="/#/"><img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'" title="Home"></a>
-	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="newExpense()" title="Add Expense">
+	<img id="add" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="new()" title="Add Expense">
 </div>
 
 <div id="head">
-	<div id="currentDate"> {{ calendar }} </div>
+	<div id="currentDate"> {{ $root.calendar }} </div>
 	<div id="total"> {{ total }}$ </div>
 </div>
 
@@ -12,7 +12,12 @@
 	<div class="category" ng-repeat="category in $root.categories | orderObjectBy : 'total' : true">
 		<a href="/#/category/{{ category.id }}">
 			<div class="categoryName"> {{ category.name }} </div>
-			<div class="barContainer"> <div class="categoryBar" style="background: {{ category.color }}; width: {{ ((category.total / maxTotal) * 100) || 0 }}%;"> {{ category.total }}$ </div>
+			<div class="barContainer"> 
+				<div class="categoryBar" style="background: {{ category.color }}; width: {{ ((category.total / maxTotal) * 100) }}%;">
+					<div class="total inside" ng-show="(category.total / maxTotal) * 100 > 25">{{ category.total }}$</div>
+				</div>
+				<div class="total outside" ng-show="(category.total / maxTotal) * 100 < 25">{{ category.total }}$</div>
+			</div>
 		</a>
 	</div>
 </div>

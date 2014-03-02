@@ -1,11 +1,17 @@
 <div class="container-fluid">
 	<div class="modal-body">
 		<div class="row">
-			<div class="col-xs-2 label">Name: </div>
-			<input class="col-xs-10" maxlength="50" ng-model="cat.name" />
+			<div class="col-xs-3 label">Name: </div>
+			<input class="col-xs-9" maxlength="50" ng-model="cat.name" />
+		</div>
+		<div class="row">
+			<div class="col-xs-3 label">Color: </div>
+			<ul class="col-xs-9 color-chooser">
+				<li class="color" ng-class="{ selected: isColor(color) }" ng-repeat="color in $root.colorScheme" style="background: {{ color }};" ng-click="setColor(color)"></li>
+			</ul>
 		</div>
 		<div class="alerts row">
-		<alert class="alert" ng-repeat="alert in alerts" type="alert.type">{{ alert.message }}</alert>
+		<alert class="alert col-xs-12" ng-repeat="alert in alerts" type="alert.type">{{ alert.message }}</alert>
 		</div>
 	</div>
 	<div class="modal-footer row">

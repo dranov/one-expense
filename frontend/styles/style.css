@@ -85,13 +85,29 @@ body {
 
 #categories .categoryBar {
 	float: left;
-	width: 60%;
+	display: inline-block;
+
+	min-width: 0.5em;
 	height: 1.3em;
 
-	color: #fff;
 	line-height: 1.3em;
 	text-align: right;
-	padding-right: 5px;
+}
+
+#categories .category .total {
+	display: inline-block;
+}
+
+#categories .category .total.inside {
+	color: #fff;
+	margin-right: 0.2em;
+}
+
+#categories .category .total.outside {
+	height: 100%;
+	margin-left: 0.2em;
+
+	color: #333;
 }
 
 /* --- Content - Expenses --- */
@@ -132,13 +148,37 @@ body {
 	border-bottom-right-radius: 0.2em;
 }
 
-.add-modal .label {
-	display: table-cell;
+.add-modal ul.color-chooser {
+	margin-top: 0.5em;
+	list-style-type: none;
+	line-height: 2em;
+	text-align: middle;
 	height: 2em;
+}
 
-	color: #000;
+.add-modal .color {
+	display: inline-block;
+	width: 1.8em;
+	height: 1.8em;
 
+	margin: 0.7em 0.2em;
+
+	line-height: 1em;
+
+	border: 1px solid #aaa;
+	border-radius: 0.2em;
+}
+
+.add-modal .color.selected {
+	border: 1px solid #444;
+}
+
+.add-modal .label {
+	height: 2em;
 	line-height: 2.2em;
+
+	color: #333;
+
 	font-size: 1.5em;
 	font-weight: normal;
 }
@@ -166,7 +206,7 @@ body {
 }
 
 .add-modal select {
-	height: 2.5em;
+	padding: 0.5em 1em;
 	margin-top: 1em;
 }
 

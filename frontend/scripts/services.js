@@ -1,6 +1,6 @@
 var services = angular.module('services', ['ngResource']);
 
-var url = 'localhost';
+var url = '192.168.0.102';
 services.factory('Categories', function ($resource) {
     return $resource('http://' + url + ':5000/api/categories', {});
 });

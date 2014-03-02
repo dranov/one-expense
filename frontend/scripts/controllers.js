@@ -5,6 +5,9 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 	// Using $rootScope to have access to categories and expenses from anywhere in app.
 	$rootScope.categories = new Object();
 	$rootScope.expenses = new Object();
+	$rootScope.calendar = '';
+	$rootScope.colorScheme = ['#F4B300', '#78BA00', '#2673EC', '#AE113D', '#006AC1', '#FF981D', '#008287', '#199900', 
+							'#AA40FF', '#00C13F', '#FF2E12', '#FF1D77', '#00A4A4', '#91D100', '#1FAEFF', '#FF76BC'];
 
 	// Categories is a service / factory that will provide all the categories from the server as an object.
 	Categories.get(function (response) {
@@ -22,18 +25,10 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 		console.log('Categories loaded.');
 	});
 
-    var currentdate = (function() {
-        var mydate=new Date();
-        var month=mydate.getMonth();
-        var daym=mydate.getDate();
-        var montharray=new Array("January","February","March","April","May","June","July","August","September","October","November","December");
-        $rootScope. calendar=montharray[month]+" "+daym;
-    })();
-
 	// Expenses is a service / factory that will provide all the expenses from the server as an object.
 	Expenses.get(function (response) {
 		for(arg in response) {
-    		if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
+			if(response.hasOwnProperty(arg) && response[arg].name !== undefined) {
 				$rootScope.expenses[arg] = { 
 					'id' : arg, 
 					'name' : response[arg].name, 
@@ -45,6 +40,9 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 
 		console.log('Expenses loaded.');
 	});
+
+	var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
+	$rootScope.calendar = months[new Date().getMonth()] + ' ' + new Date().getDate();
 });
 
 /*-- Categories Controller: used on "/#/" page --*/
@@ -75,11 +73,13 @@ controllers.controller('CategoriesListCtrl', function ($scope, $rootScope, Categ
 		$scope.total = total;
 		$scope.maxTotal = maxTotal;
 	});
+
+
 });
 
 controllers.controller('NewCategoryModalCtrl', function ($scope, $rootScope, $modal) {
 	// Opens a new modal for adding a new category
-	$scope.newCategory = function() {
+	$scope.new = function() {
 		var modalInstance = $modal.open({
 			templateUrl: '/templates/add_category_modal.html',
 			controller: 'NewCategoryModalInstanceCtrl',
@@ -107,9 +107,18 @@ controllers.controller('NewCategoryModalCtrl', function ($scope, $rootScope, $mo
 });
 
 /* Category Modal Controller: handles the modal behaviour */
-controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalInstance, Category) {
+controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $rootScope, $modalInstance, Category) {
 	$scope.cat = {};
+	$scope.cat.color = $rootScope.colorScheme[0];
 	$scope.alerts = [];
+
+	$scope.setColor = function(color) {
+		$scope.cat.color = color;
+	}
+
+	$scope.isColor = function(color) {
+		return $scope.cat.color == color;
+	}
 
 	$scope.ok = function () {
 		var validName = true;
@@ -129,10 +138,10 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $modalI
             }
         }
 
-		if(valid) {
+		if(validName) {
 			var category = new Category();
 			category.name = name;
-			category.color = '#' + Math.floor(Math.random() * 16777215).toString(16);
+			category.color = $scope.cat.color;
 
 			$modalInstance.close(category);
 		} else {
@@ -165,7 +174,7 @@ controllers.controller('ExpensesListCtrl', function ($scope, $rootScope, $routeP
 
 controllers.controller('NewExpenseModalCtrl', function ($scope, $rootScope, $modal) {
 	// Opens a new modal for adding a new expense in this / specific category
-	$scope.newExpense = function () {
+	$scope.new = function () {
 		var modalInstance = $modal.open({
 			templateUrl: '/templates/add_expense_modal.html',
 			controller: 'NewExpenseModalInstanceCtrl',
