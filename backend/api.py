@@ -9,6 +9,8 @@ import oxp.settings as settings
 import oxp.storage as storage
 from oxp.crossdomain import *
 
+import time
+
 app = flask.Flask(__name__)
 fake = faker.Faker()
 
@@ -68,9 +70,8 @@ def get_all_expenses():
                     'category_id': e.category_id}
 
         return get_request_response(json.dumps(expenses))
-
-
-
+        
+        
 # POST {name}
 @app.route(settings.API_URL_PREFIX + 'category', methods=['POST', 'OPTIONS'])
 @crossdomain(origin='*', headers='access-control-allow-origin,content-type')
@@ -81,7 +82,11 @@ def add_category():
 
         # If object isn't a category, bad request
         if (c is None) or ('name' not in c) or ('color' not in c):
-            flask.abort(400)
+            flask.abort(400)	
+
+	    # Don't	accept categories with names that are longer than 50 characters
+	    if len( c['name'] ) > 50:
+	        flask.abort(400)
 
         # Don't accept categories with names that already exist
         if storage.Category.select(storage.Category.name).where(storage.Category.name ==
@@ -89,14 +94,12 @@ def add_category():
 
             return make_response(get_request_response('A category named \'{0}\' already exists.'.format(c['name'])), 400)
 
-        db_cat = storage.Category(name=c['name'], color=c['color'])
+        db_cat = storage.Category(name=c['name'], color=c['color'], date=time.strftime("%Y-%m-%d %H:%M:%S"))
         db_cat.save()
 
 
         #TODO: return category id?
         return get_request_response('')
-
-
 
 # GET
 @app.route(settings.API_URL_PREFIX + 'categories', methods=['GET', 'OPTIONS'])
@@ -106,7 +109,7 @@ def get_all_categories():
         categories = dict()
 
         for c in storage.Category.select():
-            categories[c.id] = {'name': c.name , 'color': c.color }
+            categories[c.id] = {'name': c.name , 'color': c.color , 'date': c.date }
 
         return get_request_response(json.dumps(categories))
 

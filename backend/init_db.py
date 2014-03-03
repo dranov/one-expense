@@ -31,6 +31,7 @@ if len(sys.argv) > 1 and sys.argv[1] == 'fake':
                 
 
 # Add fake categories
+  
     for cat in range(NUM_FAKE_CATEGORIES):
         cat = oxp.storage.Category(name=fake.bs(), color=get_random_color())
         cat.save()
