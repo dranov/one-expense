@@ -53,8 +53,7 @@ def add_expense():
         db_exp.save()
 
 
-        #TODO: return expense id?
-        return get_request_response('')
+        return get_request_response(json.dumps({'id': db_exp.id}))
 
 
 
@@ -82,24 +81,22 @@ def add_category():
 
         # If object isn't a category, bad request
         if (c is None) or ('name' not in c) or ('color' not in c):
-            flask.abort(400)	
+            flask.abort(400)    
 
-	    # Don't	accept categories with names that are longer than 50 characters
-	    if len( c['name'] ) > 50:
-	        flask.abort(400)
+        # Don't accept categories with names that are longer than 50 characters
+        if len( c['name'] ) > 50:
+            return make_response(get_request_response(json.dumps('A category\'s name cannot exceed 50 characters')), 400)
 
         # Don't accept categories with names that already exist
         if storage.Category.select(storage.Category.name).where(storage.Category.name ==
                 c['name']).count() != 0:
 
-            return make_response(get_request_response('A category named \'{0}\' already exists.'.format(c['name'])), 400)
+            return make_response(get_request_response(json.dumps('A category named \'{0}\' already exists.'.format(c['name']))), 400)
 
         db_cat = storage.Category(name=c['name'], color=c['color'], date=time.strftime("%Y-%m-%d %H:%M:%S"))
         db_cat.save()
 
-
-        #TODO: return category id?
-        return get_request_response('')
+        return get_request_response(json.dumps({'id': db_cat.id}))
 
 # GET
 @app.route(settings.API_URL_PREFIX + 'categories', methods=['GET', 'OPTIONS'])
