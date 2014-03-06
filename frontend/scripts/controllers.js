@@ -73,37 +73,6 @@ controllers.controller('CategoriesListCtrl', function ($scope, $rootScope, Categ
 		$scope.total = total;
 		$scope.maxTotal = maxTotal;
 	});
-
-
-});
-
-controllers.controller('NewCategoryModalCtrl', function ($scope, $rootScope, $modal) {
-	// Opens a new modal for adding a new category
-	$scope.new = function() {
-		var modalInstance = $modal.open({
-			templateUrl: '/templates/add_category_modal.html',
-			controller: 'NewCategoryModalInstanceCtrl',
-			resolve: { },
-			windowClass: 'add-modal'
-		});
-
-		// Executed at modal close: first function at ok, second at cancel
-		modalInstance.result.then(function (category) {
-			category.$save(function (value, headers) {
-				console.log('Category \'' + category.name + '\' saved.');
-
-				var cat = {
-					'id' : $scope.categories.length,
-					'name' : category.name,
-					'color' : category.color,
-					'total' : 0
-				};
-				$rootScope.categories[cat.id] = cat;
-			}, function (response) {
-				console.log('Category \'' + category.name + '\' could not be saved: response ' + response);
-			});
-		}, function () { });
-	}
 });
 
 /* Category Modal Controller: handles the modal behaviour */
@@ -111,14 +80,6 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $rootSc
 	$scope.cat = {};
 	$scope.cat.color = $rootScope.colorScheme[0];
 	$scope.alerts = [];
-
-	$scope.setColor = function(color) {
-		$scope.cat.color = color;
-	}
-
-	$scope.isColor = function(color) {
-		return $scope.cat.color == color;
-	}
 
 	$scope.ok = function () {
 		var validName = true;
@@ -170,39 +131,6 @@ controllers.controller('ExpensesListCtrl', function ($scope, $rootScope, $routeP
 			cat.total += expense.sum;
 		}
 	});
-});
-
-controllers.controller('NewExpenseModalCtrl', function ($scope, $rootScope, $modal) {
-	// Opens a new modal for adding a new expense in this / specific category
-	$scope.new = function () {
-		var modalInstance = $modal.open({
-			templateUrl: '/templates/add_expense_modal.html',
-			controller: 'NewExpenseModalInstanceCtrl',
-			resolve: { 
-				categoryId : function () {
-					return $scope.categoryId;
-				} 
-			},
-			windowClass: 'add-modal'
-		});
-
-		// Executed at modal close: first function at ok, second at cancel
-		modalInstance.result.then(function (expense) {
-			expense.$save(function (value, headers) {
-				console.log('Expense \'' + expense.name + '\' saved.');
-
-				var exp = {
-					'id' : $scope.expenses.length,
-					'name' : expense.name,
-					'sum' : expense.sum,
-					'category' : expense.category_id
-				};
-				$rootScope.expenses[exp.id] = exp;
-			}, function (response) {
-				console.log('Expense \'' + expense.name + '\' could not be saved: httpResponse ' + response);
-			});
-		}, function () { });
-	};
 });
 
 /* Expense Modal Controller: handles the modal behaviour */
@@ -260,4 +188,64 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 	};
 });
 
+controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
+	// Opens a new modal for adding a new category
+	$scope.newCategory = function() {
+		var modalInstance = $modal.open({
+			templateUrl: '/templates/add_category_modal.html',
+			controller: 'NewCategoryModalInstanceCtrl',
+			resolve: { },
+			windowClass: 'add-modal'
+		});
 
+		// Executed at modal close: first function at ok, second at cancel
+		modalInstance.result.then(function (category) {
+			var cat = {
+				'name' : category.name,
+				'color' : category.color,
+				'total' : 0
+			};
+
+			category.$save(function () {
+				cat.id = category.id;
+				$rootScope.categories[cat.id] = cat;
+
+				console.log('Category \'' + cat.name + '\' with id ' + cat.id + ' saved.');
+			}, function (response) {
+				console.log('Category \'' + cat.name + '\' could not be saved: response ' + response);
+			});
+		}, function () { });
+	};
+
+	// Opens a new modal for adding a new expense in this / specific category
+	$scope.newExpense = function () {
+		var modalInstance = $modal.open({
+			templateUrl: '/templates/add_expense_modal.html',
+			controller: 'NewExpenseModalInstanceCtrl',
+			resolve: { 
+				categoryId : function () {
+					return $scope.categoryId;
+				} 
+			},
+			windowClass: 'add-modal'
+		});
+
+		// Executed at modal close: first function at ok, second at cancel
+		modalInstance.result.then(function (expense) {
+			var exp = {
+				'name' : expense.name,
+				'sum' : expense.sum,
+				'category' : expense.category_id
+			};
+
+			expense.$save(function () {
+				exp.id = expense.id;
+				$rootScope.expenses[exp.id] = exp;
+
+				console.log('Expense \'' + exp.name + '\' saved.');
+			}, function (response) {
+				console.log('Expense \'' + exp.name + '\' could not be saved: httpResponse ' + response);
+			});
+		}, function () { });
+	};
+});

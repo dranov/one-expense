@@ -24,13 +24,26 @@ body {
 	margin-right: auto;
 }
 
-#header #add {
+#header #add-expense {
 	float: right;
 	width: 2em;
 	height: 2em;
 
 	margin: 1em;
 	margin-left: auto;
+
+	cursor: pointer;
+}
+
+#header #add-category {
+	float: right;
+	width: 1.5em;
+	height: 1.5em;
+
+	margin: 1.25em;
+	margin-left: auto;
+	
+	cursor: pointer;
 }
 
 /* --- Content --- */
@@ -151,9 +164,6 @@ body {
 .add-modal ul.color-chooser {
 	margin-top: 0.5em;
 	list-style-type: none;
-	line-height: 2em;
-	text-align: middle;
-	height: 2em;
 }
 
 .add-modal .color {
@@ -161,9 +171,7 @@ body {
 	width: 1.8em;
 	height: 1.8em;
 
-	margin: 0.7em 0.2em;
-
-	line-height: 1em;
+	margin: 0.7em 0.2em 0 0.2em;
 
 	border: 1px solid #aaa;
 	border-radius: 0.2em;
@@ -176,6 +184,7 @@ body {
 .add-modal .label {
 	height: 2em;
 	line-height: 2.2em;
+	padding-left: 0;
 
 	color: #333;
 
