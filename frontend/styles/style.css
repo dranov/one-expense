@@ -147,6 +147,11 @@ body {
 	background: #7f0000;
 }
 
+#add-category:hover {
+	background: #7f0000;
+}
+
+
 
 /* --- Content - Expenses --- */
 #expenses {
@@ -263,7 +268,7 @@ body {
 }
 
 .add-modal button:active {
-	background: #8f0000;
+	background: #7f0000;
 }
 
 .add-modal button:hover {
