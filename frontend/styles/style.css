@@ -35,17 +35,6 @@ body {
 	cursor: pointer;
 }
 
-#header #add-category {
-	float: right;
-	width: 1.5em;
-	height: 1.5em;
-
-	margin: 1.25em;
-	margin-left: auto;
-	
-	cursor: pointer;
-}
-
 /* --- Content --- */
 #head {
 	display: block;
@@ -122,6 +111,24 @@ body {
 
 	color: #333;
 }
+
+#add-category {
+	border: 0;
+    width: 150px;
+
+	color: #fff;
+	background: #9b0000;
+    border: none;
+
+    margin-top: 0.5em;
+
+    float: right;
+}
+
+#add-category:active {
+	background: #7f0000;
+}
+
 
 /* --- Content - Expenses --- */
 #expenses {
@@ -238,3 +245,6 @@ body {
 .add-modal #cancel {
 	border-bottom-right-radius: 0.2em;
 }
+
+
+

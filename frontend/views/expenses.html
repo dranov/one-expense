@@ -1,11 +1,11 @@
 <div id="header" ng-controller="NewModalCtrl">
 	<a href="/#/"><img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'" title="Home"></a>
-	<img id="add-expense" src="../img/plus.svg" onerror="this.onerror=null; this.src='../img/plus.png'" ng-click="newExpense()" title="Add Expense">
+	<img id="add-expense" src="../img/plus.svg" onerror="this.onerror=null;this.src='../img/plus.png'" ng-click="newExpense()" title="Add expense">
 </div>
 
 <div id="content">
 	<div id="head" style="background: {{ $root.categories[categoryId].color }};">
-		<div id="currentDate"> {{ $root.calendar }} </div>
+		<div id="currentDate"> {{ $root.currentDate }} </div>
 		<div id="name"> {{ $root.categories[categoryId].name }} </div>
 		<div id="total"> {{ $root.categories[categoryId].total }} RON </div>
 	</div>
