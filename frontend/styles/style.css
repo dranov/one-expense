@@ -43,6 +43,10 @@ body {
 }
 
 /* --- Content --- */
+.expense-head {
+    color: white;
+}
+
 #head {
 	display: block;
 	padding: 10px;
