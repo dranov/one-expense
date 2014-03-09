@@ -1,12 +1,12 @@
 <div class="container-fluid">
 	<div class="modal-body">
 		<div class="row">
-			<div class="col-xs-3 label">Category: </div>
-			<input class="col-xs-9" maxlength="50" ng-model="cat.name" />
+			<div class="col-xs-4 label">Category: </div>
+			<input class="col-xs-8" maxlength="50" ng-model="cat.name" />
 		</div>
 		<div class="row">
-			<div class="col-xs-3 label">Color: </div>
-			<ul class="col-xs-9 color-chooser">
+			<div class="col-xs-4 label">Color: </div>
+			<ul class="col-xs-8 color-chooser">
 				<li class="color" ng-class="{ selected: cat.color == color }" ng-repeat="color in $root.colorScheme" style="background: {{ color }};" ng-click="cat.color = color"></li>
 			</ul>
 		</div>

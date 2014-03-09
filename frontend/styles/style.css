@@ -174,42 +174,49 @@ body {
 }
 
 /* --- Add Modal --- */
+
+.add-modal {
+}
+
 .add-modal .modal-footer {
 	margin-top: 0 !important;
 	padding: 0 !important;
 
-	border-bottom-left-radius: 0.2em;
-	border-bottom-right-radius: 0.2em;
+	border-bottom-left-radius: 2px;
+	border-bottom-right-radius: 2px;
 }
 
 .add-modal ul.color-chooser {
+    position: relative;
 	margin-top: 0.5em;
 	list-style-type: none;
 }
 
 .add-modal .color {
 	display: inline-block;
-	width: 1.8em;
-	height: 1.8em;
+	width: 1.2em;
+	height: 1.2em;
 
-	margin: 0.7em 0.2em 0 0.2em;
+	margin: 0.5em 0.2em 0 0.2em;
 
 	border: 1px solid #aaa;
-	border-radius: 0.2em;
+	border-radius: 5px;
 }
 
 .add-modal .color.selected {
-	border: 1px solid #444;
+	border: 3px solid #444;
 }
 
 .add-modal .label {
 	height: 2em;
-	line-height: 2.2em;
+    line-height: 2em;
 	padding-left: 0;
+
+    text-align: left;
 
 	color: #333;
 
-	font-size: 1.5em;
+	font-size: 1em;
 	font-weight: normal;
 }
 
@@ -228,7 +235,8 @@ body {
 
 	background: rgba(0, 0, 0, 0);
 
-	font-size: 2em;
+	font-size: 1em;
+    height: 2em;
 }
 
 .add-modal input:first-child {
@@ -236,8 +244,10 @@ body {
 }
 
 .add-modal select {
-	padding: 0.5em 1em;
-	margin-top: 1em;
+	margin-top: 0.2em;
+
+    height: 2em;
+    font-size: 1em;
 }
 
 .add-modal button {
@@ -249,8 +259,13 @@ body {
 }
 
 .add-modal button:active {
+	background: #8f0000;
+}
+
+.add-modal button:hover {
 	background: #7f0000;
 }
+
 
 .add-modal #ok {
 	border-bottom-left-radius: 0.2em;
