@@ -82,6 +82,7 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $rootSc
 	$scope.alerts = [];
 
 	$scope.ok = function () {
+        $scope.alerts = [];
 		var validName = true;
         var nameReason = '';
 

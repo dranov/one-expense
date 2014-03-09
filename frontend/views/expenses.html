@@ -7,13 +7,13 @@
 	<div id="head" style="background: {{ $root.categories[categoryId].color }};">
 		<div id="currentDate"> {{ $root.calendar }} </div>
 		<div id="name"> {{ $root.categories[categoryId].name }} </div>
-		<div id="total"> {{ $root.categories[categoryId].total }}$ </div>
+		<div id="total"> {{ $root.categories[categoryId].total }} RON </div>
 	</div>
 
 	<div id="expenses">
 		<div class="expense" ng-repeat="expense in expenses | filterObject: { category : categoryId }">
 			<div class="expenseName"> {{ expense.name }} </div>
-			<div class="expenseSum"> {{ expense.sum }}$ </div>
+			<div class="expenseSum"> {{ expense.sum }} RON </div>
 			<hr>
 		</div>
 	</div>

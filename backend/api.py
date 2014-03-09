@@ -48,8 +48,7 @@ def add_expense():
         if (e is None) or ('name' not in e) or ('sum' not in e) or ('category_id' not in e):
             flask.abort(400)
 
-        db_exp = storage.Expense(name=e['name'], sum=e['sum'],
-                category_id=e['category_id'])
+        db_exp = storage.Expense(name=e['name'], sum=e['sum'], category_id=e['category_id'], date=time.strftime("%Y-%m-%d %H:%M:%S"))
         db_exp.save()
 
 
@@ -66,7 +65,7 @@ def get_all_expenses():
 
         for e in storage.Expense.select():
             expenses[e.id] = {'name': e.name, 'sum': e.sum,
-                    'category_id': e.category_id}
+                    'category_id': e.category_id, 'date': e.date}
 
         return get_request_response(json.dumps(expenses))
         
@@ -88,9 +87,7 @@ def add_category():
             return make_response(get_request_response(json.dumps('A category\'s name cannot exceed 50 characters')), 400)
 
         # Don't accept categories with names that already exist
-        if storage.Category.select(storage.Category.name).where(storage.Category.name ==
-                c['name']).count() != 0:
-
+        if storage.Category.select(storage.Category.name).where(storage.Category.name == c['name']).count() != 0:
             return make_response(get_request_response(json.dumps('A category named \'{0}\' already exists.'.format(c['name']))), 400)
 
         db_cat = storage.Category(name=c['name'], color=c['color'], date=time.strftime("%Y-%m-%d %H:%M:%S"))
@@ -109,31 +106,6 @@ def get_all_categories():
             categories[c.id] = {'name': c.name , 'color': c.color , 'date': c.date }
 
         return get_request_response(json.dumps(categories))
-
-
-
-@app.route(settings.API_URL_PREFIX + 'version', methods=['GET', 'OPTIONS'])
-@crossdomain(origin='*')
-def get_api_version():
-    content = {'API-Version': settings.API_VERSION}
-    return get_request_response(json.dumps(content))
-
-
-@app.route(settings.API_URL_PREFIX + 'endpoints', methods=['GET', 'OPTIONS'])
-@crossdomain(origin='*')
-def list_endpoints():
-    endpoints = {
-        'version': ['GET'],
-        'endpoints': ['GET'],
-        'category': ['POST'],
-        'categories': ['GET'],
-        'expense': ['POST'],
-        'expenses': ['GET'],
-        'login': ['POST'],
-        'register': ['POST']
-    }
-
-    return get_request_response(json.dumps(endpoints))
 
 
 if __name__ == '__main__':

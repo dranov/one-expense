@@ -6,7 +6,7 @@
 
 <div id="head">
 	<div id="currentDate"> {{ $root.calendar }} </div>
-	<div id="total"> {{ total }}$ </div>
+	<div id="total"> {{ total }} RON </div>
 </div>
 
 <div id="categories">
@@ -15,9 +15,11 @@
 			<div class="categoryName"> {{ category.name }} </div>
 			<div class="barContainer"> 
 				<div class="categoryBar" style="background: {{ category.color }}; width: {{ ((category.total / maxTotal) * 100) }}%;">
-					<div class="total inside" ng-show="(category.total / maxTotal) * 100 > 25">{{ category.total }}$</div>
+					<div class="total inside" ng-show="(category.total /
+                        maxTotal) * 100 > 25">{{ category.total }} RON</div>
 				</div>
-				<div class="total outside" ng-show="(category.total / maxTotal) * 100 < 25">{{ category.total }}$</div>
+				<div class="total outside" ng-show="(category.total / maxTotal)
+                    * 100 < 25">{{ category.total }} RON</div>
 			</div>
 		</a>
 	</div>
