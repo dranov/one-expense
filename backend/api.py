@@ -48,6 +48,11 @@ def add_expense():
         if (e is None) or ('name' not in e) or ('sum' not in e) or ('category_id' not in e):
             flask.abort(400)
 
+        if e['sum'] < 0:
+            return make_response(get_request_response(json.dumps('An expense cannot be negative.')), 400)
+
+
+
         db_exp = storage.Expense(name=e['name'], sum=e['sum'], category_id=e['category_id'], date=time.strftime("%Y-%m-%d %H:%M:%S"))
         db_exp.save()
 

@@ -165,6 +165,16 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 			valueReason = 'Expense value cannot be empty.';
 		}
 
+        if (parseFloat(sum) === NaN) {
+            validValue = false;
+            valueReason = "Expense must be a number.";
+        }
+
+        if (parseFloat(sum) < 0) {
+            validValue = false;
+            valueReason = "Expense cannot have negative value.";
+        }
+
 		var category = $scope.exp.category;
 		if(category === undefined || category === null) {
 			validCategory = false;
