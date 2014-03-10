@@ -1,0 +1,16 @@
+<div class="container-fluid">
+	<div class="modal-body">
+		<div class="row">
+			<div class="col-xs-4 label">Start date: </div>
+			<input class="col-xs-8" readonly="true" ng-model="time.start" datepicker-popup="dd.MM.yyyy" show-button-bar="false" show-weeks="false"/>
+		</div>
+		<div class="row">
+			<div class="col-xs-4 label">End date: </div>
+			<input class="col-xs-8" readonly="true" ng-model="time.end" datepicker-popup="dd.MM.yyyy" min="time.start" show-button-bar="false" show-weeks="false" ng-disabled="time.start === undefined"/>
+		</div>
+	</div>
+	<div class="modal-footer row">
+		<button id="ok" class="col-xs-6" ng-click="ok()"> OK </button>
+		<button id="cancel" class="col-xs-6" ng-click="cancel()"> Cancel </button>
+	</div>
+</div>

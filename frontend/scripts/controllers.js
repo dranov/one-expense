@@ -200,6 +200,19 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 	};
 });
 
+/* Expense Modal Controller: handles the modal behaviour */
+controllers.controller('NewTimeSpanModalInstanceCtrl', function ($scope, $rootScope, $modalInstance) {
+	$scope.time = {};
+
+	$scope.ok = function () {
+		$modalInstance.close();
+	};
+
+	$scope.cancel = function () {
+		$modalInstance.dismiss();
+	};
+});
+
 controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 	// Opens a new modal for adding a new category
 	$scope.newCategory = function() {
@@ -258,6 +271,21 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			}, function (response) {
 				console.log('Expense \'' + exp.name + '\' could not be saved: httpResponse ' + response);
 			});
+		}, function () { });
+	};
+
+	// Opens a new modal for selecting a timespan
+	$scope.selectTimeSpan = function () {
+		var modalInstance = $modal.open({
+			templateUrl: '/templates/select_timespan_modal.html',
+			controller: 'NewTimeSpanModalInstanceCtrl',
+			resolve: { },
+			windowClass: 'add-modal',
+
+		});
+
+		// Executed at modal close: first function at ok, second at cancel
+		modalInstance.result.then(function () {
 		}, function () { });
 	};
 });

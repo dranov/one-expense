@@ -1,3 +1,4 @@
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
 @font-face {
     font-family: Roboto;
     src: url(../fonts/Roboto-Light.ttf);
@@ -10,7 +11,7 @@
 /* --- Header (BAR) --- */
 body {
 	background-color: #eee !important;
-    font-family: Roboto;
+    font-family: 'Roboto' 'Glyphicons Halflings';
     font-size: 20px;
 }
 
@@ -40,6 +41,36 @@ body {
 	margin: 12.5px;
 
 	cursor: pointer;
+}
+
+#header #select-timespan {
+	float: right;
+	height: 35px;
+
+	margin: 12.5px;
+
+	cursor: pointer;
+}
+
+#add-category {
+    float: right;
+    height: 30px;
+	border: 0;
+
+	color: #fff;
+	background: #9b0000;
+    border: none;
+    line-height: 30px;
+
+    margin-top: 30px;
+}
+
+#add-category:active {
+	background: #7f0000;
+}
+
+#add-category:hover {
+	background: #7f0000;
 }
 
 /* --- Content --- */
@@ -127,31 +158,6 @@ body {
 
 	color: #333;
 }
-
-#add-category {
-	border: 0;
-
-	color: #fff;
-	background: #9b0000;
-    border: none;
-
-    height: 30px;
-    line-height: 30px;
-
-    margin-top: 30px;
-
-    float: right;
-}
-
-#add-category:active {
-	background: #7f0000;
-}
-
-#add-category:hover {
-	background: #7f0000;
-}
-
-
 
 /* --- Content - Expenses --- */
 #expenses {
@@ -248,6 +254,16 @@ body {
     height: 2em;
 }
 
+.add-modal .input-label {
+	border: 1px solid #CCC;
+	margin-top: 0.2em;
+
+	background: rgba(0, 0, 0, 0);
+
+	font-size: 1em;
+    height: 2em;
+}
+
 .add-modal input:first-child {
 	margin-top: 0;
 }
@@ -259,7 +275,7 @@ body {
     font-size: 1em;
 }
 
-.add-modal button {
+.add-modal .modal-footer button {
 	border: 0;
 	height: 3em;
 
@@ -267,11 +283,11 @@ body {
 	background: #9b0000;
 }
 
-.add-modal button:active {
+.add-modal .modal-footer button:active {
 	background: #7f0000;
 }
 
-.add-modal button:hover {
+.add-modal .modal-footer button:hover {
 	background: #7f0000;
 }
 
@@ -284,5 +300,6 @@ body {
 	border-bottom-right-radius: 0.2em;
 }
 
-
-
+.dropdown-menu {
+	padding: 0.5em;
+}

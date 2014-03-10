@@ -1,6 +1,7 @@
 <div id="header" ng-controller="NewModalCtrl">
 	<a href="/#/"><img id="logo" src="../img/logo.svg" onerror="this.onerror=null; this.src='../img/logo.png'" title="Home"></a>
 	<img id="add-expense" src="../img/plus.svg" onerror="this.onerror=null;this.src='../img/plus.png'" ng-click="newExpense()" title="Add expense">
+	<img id="select-timespan" src="../img/calendar.svg" onerror="this.onerror=null;this.src='../img/calendar.png'" ng-click="selectTimeSpan()" title="Select period of time">
 </div>
 
 <div id="head">
@@ -14,11 +15,9 @@
 			<div class="categoryName"> {{ category.name }} </div>
 			<div class="barContainer"> 
 				<div class="categoryBar" style="background: {{ category.color }}; width: {{ ((category.total / maxTotal) * 100) }}%;">
-					<div class="total inside" ng-show="(category.total /
-                        maxTotal) * 100 > 25">{{ category.total }} RON</div>
+					<div class="total inside" ng-show="(category.total / maxTotal) * 100 > 25">{{ category.total }} RON</div>
 				</div>
-				<div class="total outside" ng-show="(category.total / maxTotal)
-                    * 100 < 25">{{ category.total }} RON</div>
+				<div class="total outside" ng-show="(category.total / maxTotal) * 100 < 25">{{ category.total }} RON</div>
 			</div>
 		</a>
         <div class="clear"></div>
