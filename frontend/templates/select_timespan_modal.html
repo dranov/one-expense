@@ -8,9 +8,13 @@
 			<div class="col-xs-4 label">End date: </div>
 			<input class="col-xs-8" readonly="true" ng-model="time.end" datepicker-popup="dd.MM.yyyy" min="time.start" show-button-bar="false" show-weeks="false" ng-disabled="time.start === undefined"/>
 		</div>
+		<div class="alerts row">
+		<alert class="alert col-xs-12" ng-repeat="alert in alerts" type="alert.type">{{ alert.message }}</alert>
+		</div>
 	</div>
 	<div class="modal-footer row">
-		<button id="ok" class="col-xs-6" ng-click="ok()"> OK </button>
-		<button id="cancel" class="col-xs-6" ng-click="cancel()"> Cancel </button>
+		<button id="ok" class="col-xs-4" ng-click="ok()"> OK </button>
+		<button id="all" class="col-xs-4" ng-click="all()"> All </button>
+		<button id="cancel" class="col-xs-4" ng-click="cancel()"> Cancel </button>
 	</div>
 </div>

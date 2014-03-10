@@ -8,6 +8,7 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 	$rootScope.currentDate = '';
 	$rootScope.colorScheme = ['#F4B300', '#78BA00', '#2673EC', '#AE113D', '#006AC1', '#FF981D', '#008287', '#199900', 
 							'#AA40FF', '#00C13F', '#FF2E12', '#FF1D77', '#00A4A4', '#91D100', '#1FAEFF', '#FF76BC'];
+	$rootScope.timeSpan = { start : null, end : null }; 
 
 	// Categories is a service / factory that will provide all the categories from the server as an object.
 	Categories.get(function (response) {
@@ -189,9 +190,9 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 
 			$modalInstance.close(expense);
 		} else {
-			if(!validName) $scope.alerts.push({ 'type' : 'danger', 'message' : nameReason});
-			if(!validValue) $scope.alerts.push({ 'type' : 'danger', 'message' : valueReason});
-			if(!validCategory) $scope.alerts.push({ 'type' : 'danger', 'message' : categoryReason});
+			if(!validName) $scope.alerts.push({ 'type' : 'danger', 'message' : nameReason });
+			if(!validValue) $scope.alerts.push({ 'type' : 'danger', 'message' : valueReason });
+			if(!validCategory) $scope.alerts.push({ 'type' : 'danger', 'message' : categoryReason });
 		}
 	};
 
@@ -200,19 +201,47 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 	};
 });
 
-/* Expense Modal Controller: handles the modal behaviour */
-controllers.controller('NewTimeSpanModalInstanceCtrl', function ($scope, $rootScope, $modalInstance) {
+controllers.controller('TimeSpanModalInstanceCtrl', function ($scope, $modalInstance) {
 	$scope.time = {};
+	$scope.alerts = [];
 
 	$scope.ok = function () {
-		$modalInstance.close();
+		$scope.alerts = [];
+
+		var validStart = true;
+		var startReason = '';
+
+		var validEnd = true;
+		var endReason = '';
+
+		var time = $scope.time;
+		if(time.start === null || time.start === undefined) {
+			validStart = false;
+			startReason = 'Please select a start time.';
+		}
+		if(time.end === null || time.end === undefined) {
+			validEnd = false;
+			endReason = 'Please select a end time.';
+		}
+
+		if(validStart && validEnd) {
+			$modalInstance.close(time);
+		} else {
+			if(!validStart) $scope.alerts.push({ 'type' : 'danger', 'message' : startReason });
+			if(!validEnd) $scope.alerts.push({ 'type' : 'danger', 'message' : endReason });
+		}
 	};
+
+	$scope.all = function () {
+		$modalInstance.close(new Object());
+	}
 
 	$scope.cancel = function () {
 		$modalInstance.dismiss();
 	};
 });
 
+/* Expense Modal Controller: handles the modal behaviour */
 controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 	// Opens a new modal for adding a new category
 	$scope.newCategory = function() {
@@ -278,14 +307,29 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 	$scope.selectTimeSpan = function () {
 		var modalInstance = $modal.open({
 			templateUrl: '/templates/select_timespan_modal.html',
-			controller: 'NewTimeSpanModalInstanceCtrl',
+			controller: 'TimeSpanModalInstanceCtrl',
 			resolve: { },
-			windowClass: 'add-modal',
-
+			windowClass: 'add-modal'
 		});
 
+		var formatDate = function(day, month, year) {
+			var fday = (day < 10 ? '0' : 0) + day;
+			var fmonth = (month < 10 ? '0' : 0) + month;
+			var fyear = year;
+			return fday + '.' + fmonth + '.' + fyear;
+		}
+
 		// Executed at modal close: first function at ok, second at cancel
-		modalInstance.result.then(function () {
+		modalInstance.result.then(function (time) {
+			if(time.start === null || time.start === undefined) {
+				$rootScope.timeSpan.start = null;
+				$rootScope.timeSpan.end = null;
+			} else {
+				var startTime = formatDate(time.start.getDate(), time.start.getMonth() + 1, time.start.getFullYear());
+				var endTime = formatDate(time.end.getDate(), time.end.getMonth() + 1, time.end.getFullYear());
+				$rootScope.timeSpan.start = startTime;
+				$rootScope.timeSpan.end = endTime;
+			}
 		}, function () { });
 	};
 });

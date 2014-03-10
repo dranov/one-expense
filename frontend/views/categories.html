@@ -6,6 +6,7 @@
 
 <div id="head">
 	<div id="currentDate"> {{ $root.currentDate }} </div>
+	<div id="timeSpan" ng-show="$root.timeSpan.start !== null"> {{ $root.timeSpan.start }} - {{ $root.timeSpan.end }} </div>
 	<div id="total"> {{ total }} RON </div>
 </div>
 

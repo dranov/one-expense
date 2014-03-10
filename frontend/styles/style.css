@@ -275,6 +275,10 @@ body {
     font-size: 1em;
 }
 
+.add-modal .modal-footer {
+	background: #9b0000;
+}
+
 .add-modal .modal-footer button {
 	border: 0;
 	height: 3em;
@@ -291,15 +295,18 @@ body {
 	background: #7f0000;
 }
 
-
-.add-modal #ok {
-	border-bottom-left-radius: 0.2em;
+.add-modal .modal-footer #ok {
+	border-bottom-left-radius: 0.25em;
 }
 
-.add-modal #cancel {
-	border-bottom-right-radius: 0.2em;
+.add-modal .modal-footer #cancel {
+	border-bottom-right-radius: 0.25em;
 }
 
-.dropdown-menu {
+.add-modal .modal-footer #all {
+	width: 33.3%;
+}
+
+.add-modal .modal-footer .dropdown-menu {
 	padding: 0.5em;
 }
