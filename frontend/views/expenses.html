@@ -6,12 +6,13 @@
 <div id="content">
 	<div id="head" class="expense-head" style="background: {{ $root.categories[categoryId].color }};">
 		<div id="currentDate"> {{ $root.currentDate }} </div>
+		<div id="timeSpan" ng-if="$root.timeSpan.start !== null"> {{ $root.formatDate($root.timeSpan.start) }} - {{ $root.formatDate($root.timeSpan.end) }} </div>
 		<div id="name"> {{ $root.categories[categoryId].name }} </div>
 		<div id="total"> {{ $root.categories[categoryId].total }} RON </div>
 	</div>
 
 	<div id="expenses">
-		<div class="expense" ng-repeat="expense in expenses | filterObject: { category : categoryId }">
+		<div class="expense" ng-repeat="expense in expenses | filterObjectByDate : $root.time.start : $root.time.end | filterObject: { category : categoryId }">
 			<div class="expenseName"> {{ expense.name }} </div>
 			<div class="expenseSum"> {{ expense.sum }} RON </div>
 			<hr>

@@ -8,7 +8,14 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 	$rootScope.currentDate = '';
 	$rootScope.colorScheme = ['#F4B300', '#78BA00', '#2673EC', '#AE113D', '#006AC1', '#FF981D', '#008287', '#199900', 
 							'#AA40FF', '#00C13F', '#FF2E12', '#FF1D77', '#00A4A4', '#91D100', '#1FAEFF', '#FF76BC'];
-	$rootScope.timeSpan = { start : null, end : null }; 
+	$rootScope.timeSpan = { start : null, end : null };
+
+	$rootScope.formatDate = function (date) {
+		var fday = (date.getDate() < 10 ? '0' : 0) + date.getDate();
+		var fmonth = (date.getMonth() + 1 < 10 ? '0' : 0) + (date.getMonth() + 1);
+		var fyear = date.getFullYear();
+		return fday + '.' + fmonth + '.' + fyear;
+	}
 
 	// Categories is a service / factory that will provide all the categories from the server as an object.
 	Categories.get(function (response) {
@@ -18,6 +25,7 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 					'id' : arg, 
 					'name' : response[arg].name, 
 					'color' : response[arg].color,
+					'date' : response[arg].date,
 					'total' : 0
 				};
 			}
@@ -43,6 +51,28 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 		console.log('Expenses loaded.');
 	});
 
+	$rootScope.calculateTotals = function () {
+		for(key in $rootScope.categories) {
+			$rootScope.categories[key].total = 0;
+		}
+
+		for(key in $rootScope.expenses) {
+			var expense = $rootScope.expenses[key];
+			var cat = $rootScope.categories[expense.category];
+
+			if(angular.isObject($rootScope.timeSpan.start)) {
+				var start = $rootScope.timeSpan.start;
+				var end = $rootScope.timeSpan.end;
+				var date = new Date(expense['date']);
+
+				if(date >= start && date < new Date(end).setDate(end.getDate() + 1))
+					cat.total += expense.sum;
+			} else {
+				cat.total += expense.sum;
+			}
+		}
+	}
+
 	var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
 	$rootScope.currentDate = months[new Date().getMonth()] + ' ' + new Date().getDate();
 });
@@ -53,19 +83,14 @@ controllers.controller('CategoriesListCtrl', function ($scope, $rootScope, Categ
 	$scope.maxTotal = 0;
 
 	// Compute the total value of every expense and the most expensive category
-	$rootScope.$watchCollection('expenses', function() {
-		for(key in $rootScope.categories) {
-			$rootScope.categories[key].total = 0;
-		}
+	$rootScope.$watch('expenses', function() {
+		$rootScope.calculateTotals();
+	}, true);
 
-		for(key in $rootScope.expenses) {
-			var expense = $rootScope.expenses[key];
-			var cat = $rootScope.categories[expense.category];
-			cat.total += expense.sum;
-		}
-
+	$rootScope.$watch('categories', function() {
 		var total = 0;
 		var maxTotal = 0;
+
 		for(key in $rootScope.categories) {
 			var cat = $rootScope.categories[key];
 			total += cat.total;
@@ -74,7 +99,7 @@ controllers.controller('CategoriesListCtrl', function ($scope, $rootScope, Categ
 		}
 		$scope.total = total;
 		$scope.maxTotal = maxTotal;
-	});
+	}, true);
 });
 
 /* Category Modal Controller: handles the modal behaviour */
@@ -257,6 +282,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			var cat = {
 				'name' : category.name,
 				'color' : category.color,
+				'date' : new Date(),
 				'total' : 0
 			};
 
@@ -289,6 +315,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			var exp = {
 				'name' : expense.name,
 				'sum' : expense.sum,
+				'date' : new Date(),
 				'category' : expense.category_id
 			};
 
@@ -312,24 +339,18 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			windowClass: 'add-modal'
 		});
 
-		var formatDate = function(day, month, year) {
-			var fday = (day < 10 ? '0' : 0) + day;
-			var fmonth = (month < 10 ? '0' : 0) + month;
-			var fyear = year;
-			return fday + '.' + fmonth + '.' + fyear;
-		}
-
 		// Executed at modal close: first function at ok, second at cancel
 		modalInstance.result.then(function (time) {
 			if(time.start === null || time.start === undefined) {
 				$rootScope.timeSpan.start = null;
 				$rootScope.timeSpan.end = null;
 			} else {
-				var startTime = formatDate(time.start.getDate(), time.start.getMonth() + 1, time.start.getFullYear());
-				var endTime = formatDate(time.end.getDate(), time.end.getMonth() + 1, time.end.getFullYear());
+				var startTime = time.start;
+				var endTime = time.end;
 				$rootScope.timeSpan.start = startTime;
 				$rootScope.timeSpan.end = endTime;
 			}
+			$rootScope.calculateTotals();
 		}, function () { });
 	};
 });
