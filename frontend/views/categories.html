@@ -5,8 +5,8 @@
 </div>
 
 <div id="head">
-    <div id="timeSpan" ng-if="$root.timeSpan.start !== null && ($root.timeSpan.start === $root.timeSpan.end)">{{$root.formatDate($root.timeSpan.start)}}</div>
-	<div id="timeSpan" ng-if="$root.timeSpan.start !== null && ($root.timeSpan.start !== $root.timeSpan.end)"> {{ $root.formatDate($root.timeSpan.start) }} – {{ $root.formatDate($root.timeSpan.end) }} </div>
+    <div id="timeSpan" ng-if="$root.timeSpan.start !== null && ($root.timeSpan.start.getTime() === $root.timeSpan.end.getTime())">{{$root.formatDate($root.timeSpan.start)}}</div>
+	<div id="timeSpan" ng-if="$root.timeSpan.start !== null && ($root.timeSpan.start.getTime() !== $root.timeSpan.end.getTime())"> {{ $root.formatDate($root.timeSpan.start) }} – {{ $root.formatDate($root.timeSpan.end) }} </div>
 	<div id="total"> {{ total }} RON </div>
 </div>
 
@@ -18,7 +18,7 @@
 				<div class="categoryBar" style="background: {{ category.color }}; width: {{ ((category.total / maxTotal) * 100) }}%;" title="  {{ category.name }} ">
 					<div class="total inside" ng-show="(category.total / maxTotal) * 100 >= 25">{{ category.total }} RON</div>
 				</div>
-				<div class="total outside" ng-show="(category.total / maxTotal) * 100 < 25">{{ category.total }} RON</div>
+				<div class="total outside" ng-show="((category.total / maxTotal) * 100 < 25) || maxTotal == 0">{{ category.total }} RON</div>
 			</div>
 		</a>
         <div class="clear"></div>

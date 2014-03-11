@@ -10,7 +10,12 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 
     
     var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-	$rootScope.timeSpan = { start : null, end : null };
+
+    var now = new Date();
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    var startOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+
+	$rootScope.timeSpan = { start : startOfMonth, end : today };
 
 	$rootScope.formatDate = function (date) {
         return months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
@@ -69,10 +74,16 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 			if(angular.isObject($rootScope.timeSpan.start)) {
 				var start = $rootScope.timeSpan.start;
 				var end = $rootScope.timeSpan.end;
-				var date = new Date(expense['date']);
+                var dateComp = expense['date'].split('-');
+				var date = new Date(parseInt(dateComp[0], 10), parseInt(dateComp[1], 10) - 1, parseInt(dateComp[2], 10));
 
-				if(date >= start && date < new Date(end).setDate(end.getDate() + 1))
+                console.log(start.getTime());
+                console.log(date.getTime());
+                console.log(end.getTime());
+
+				if(date.getTime() >= start.getTime() && date.getTime() <= end.getTime()) {
 					cat.total += expense.sum;
+                }
 			} else {
 				cat.total += expense.sum;
 			}
@@ -226,35 +237,48 @@ controllers.controller('TimeSpanModalInstanceCtrl', function ($scope, $modalInst
 	$scope.time = {};
 	$scope.alerts = [];
 
-    var today = new Date();
+    var now = new Date()
+    var today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
     $scope.time.start = new Date(today.getFullYear(), today.getMonth(), 1);
     $scope.time.end = today;
 
 	$scope.ok = function () {
 		$scope.alerts = [];
-
+        
 		var validStart = true;
 		var startReason = '';
 
 		var validEnd = true;
 		var endReason = '';
 
+        var validInterval = true;
+        var intervalReason = '';
+
+
+        $scope.time.start = new Date($scope.time.start.getFullYear(), $scope.time.start.getMonth(), $scope.time.start.getDate());
+        $scope.time.end = new Date($scope.time.end.getFullYear(), $scope.time.end.getMonth(), $scope.time.end.getDate());
 		var time = $scope.time;
+
 		if(time.start === null || time.start === undefined) {
 			validStart = false;
-			startReason = 'Please select a start time.';
+			startReason = 'Please select a start date.';
 		}
 		if(time.end === null || time.end === undefined) {
 			validEnd = false;
-			endReason = 'Please select a end time.';
+			endReason = 'Please select an end date.';
 		}
+        if(time.start.getTime() > time.end.getTime()) {
+            validInterval = false;
+            intervalReason = 'Start date cannot be greater than end date.';
+        }
 
-		if(validStart && validEnd) {
+		if(validStart && validEnd && validInterval) {
 			$modalInstance.close(time);
 		} else {
 			if(!validStart) $scope.alerts.push({ 'type' : 'danger', 'message' : startReason });
 			if(!validEnd) $scope.alerts.push({ 'type' : 'danger', 'message' : endReason });
+            if(!validInterval) $scope.alerts.push({ 'type' : 'danger', 'message' : intervalReason });
 		}
 	};
 
