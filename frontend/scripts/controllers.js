@@ -17,6 +17,10 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 
 	$rootScope.timeSpan = { start : startOfMonth, end : today };
 
+	$rootScope.formatDate = function (date) {
+		return months[date.getMonth()] + ' ' + date.getDate() + ', ' + date.getFullYear(); 
+	}
+
 	// Categories is a service / factory that will provide all the categories from the server as an object.
 	Categories.get(function (response) {
 		for(arg in response) {
