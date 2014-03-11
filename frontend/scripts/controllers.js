@@ -280,10 +280,11 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 
 		// Executed at modal close: first function at ok, second at cancel
 		modalInstance.result.then(function (category) {
+			var date = new Date();
 			var cat = {
 				'name' : category.name,
 				'color' : category.color,
-				'date' : $rootScope.formatDateForBackend(new Date()),
+				'date' : new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
 				'total' : 0
 			};
 
@@ -313,10 +314,11 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 
 		// Executed at modal close: first function at ok, second at cancel
 		modalInstance.result.then(function (expense) {
+			var date = new Date();
 			var exp = {
 				'name' : expense.name,
 				'sum' : expense.sum,
-				'date' : $rootScope.formatDateForBackend(new Date()),
+				'date' : new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
 				'category' : expense.category_id
 			};
 
