@@ -144,18 +144,10 @@ controllers.controller('NewCategoryModalInstanceCtrl', function ($scope, $rootSc
 controllers.controller('ExpensesListCtrl', function ($scope, $rootScope, $routeParams, Expenses) {
 	$scope.categoryId = $routeParams.categoryId;
 
-	// Compute the total value of every expense and the most expensive category
-	$rootScope.$watchCollection('expenses', function() {
-		for(key in $rootScope.categories) {
-			$rootScope.categories[key].total = 0;
-		}
-
-		for(key in $rootScope.expenses) {
-			var expense = $rootScope.expenses[key];
-			var cat = $rootScope.categories[expense.category];
-			cat.total += expense.sum;
-		}
-	});
+	// Compute the total value of every category
+	$rootScope.$watch('expenses', function() {
+		$rootScope.calculateTotals();
+	}, true);
 });
 
 /* Expense Modal Controller: handles the modal behaviour */
@@ -347,10 +339,8 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 				$rootScope.timeSpan.start = null;
 				$rootScope.timeSpan.end = null;
 			} else {
-				var startTime = time.start;
-				var endTime = time.end;
-				$rootScope.timeSpan.start = startTime;
-				$rootScope.timeSpan.end = endTime;
+				$rootScope.timeSpan.start = time.start;
+				$rootScope.timeSpan.end = time.end;
 			}
 			$rootScope.calculateTotals();
 		}, function () { });

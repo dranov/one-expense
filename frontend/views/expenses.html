@@ -12,7 +12,7 @@
 	</div>
 
 	<div id="expenses">
-		<div class="expense" ng-repeat="expense in expenses | filterObjectByDate : $root.time.start : $root.time.end | filterObject: { category : categoryId }">
+		<div class="expense" ng-repeat="expense in expenses | filterObjectByDate : $root.timeSpan.start : $root.timeSpan.end | filterObject: { category : categoryId }">
 			<div class="expenseName"> {{ expense.name }} </div>
 			<div class="expenseSum"> {{ expense.sum }} RON </div>
 			<hr>
