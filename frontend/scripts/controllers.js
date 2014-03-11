@@ -16,6 +16,13 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
         return months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
 	}
 
+	$rootScope.formatDateForBackend = function (date) {
+		var fday = (date.getDate() < 10 ? '0' : 0) + date.getDate();
+		var fmonth = (date.getMonth() + 1 ? '0' : 1) + date.getMonth();
+		var fyear = date.getFullYear();
+		return fyear + '-' + fmonth + '-' + fday;
+	}
+
 	// Categories is a service / factory that will provide all the categories from the server as an object.
 	Categories.get(function (response) {
 		for(arg in response) {
@@ -276,7 +283,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			var cat = {
 				'name' : category.name,
 				'color' : category.color,
-				'date' : new Date(),
+				'date' : $rootScope.formatDateForBackend(new Date()),
 				'total' : 0
 			};
 
@@ -309,7 +316,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			var exp = {
 				'name' : expense.name,
 				'sum' : expense.sum,
-				'date' : new Date(),
+				'date' : $rootScope.formatDateForBackend(new Date()),
 				'category' : expense.category_id
 			};
 
