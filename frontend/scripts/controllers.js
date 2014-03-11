@@ -17,17 +17,6 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 
 	$rootScope.timeSpan = { start : startOfMonth, end : today };
 
-	$rootScope.formatDate = function (date) {
-        return months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
-	}
-
-	$rootScope.formatDateForBackend = function (date) {
-		var fday = (date.getDate() < 10 ? '0' : 0) + date.getDate();
-		var fmonth = (date.getMonth() + 1 ? '0' : 0) + (date.getMonth() + 1);
-		var fyear = date.getFullYear();
-		return fyear + '-' + fmonth + '-' + fday;
-	}
-
 	// Categories is a service / factory that will provide all the categories from the server as an object.
 	Categories.get(function (response) {
 		for(arg in response) {
@@ -71,19 +60,14 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 			var expense = $rootScope.expenses[key];
 			var cat = $rootScope.categories[expense.category];
 
-			if(angular.isObject($rootScope.timeSpan.start)) {
-				var start = $rootScope.timeSpan.start;
-				var end = $rootScope.timeSpan.end;
+			var start = $rootScope.timeSpan.start;
+			var end = $rootScope.timeSpan.end;
+			if(angular.isObject(start)) {
                 var dateComp = expense['date'].split('-');
 				var date = new Date(parseInt(dateComp[0], 10), parseInt(dateComp[1], 10) - 1, parseInt(dateComp[2], 10));
 
-                console.log(start.getTime());
-                console.log(date.getTime());
-                console.log(end.getTime());
-
-				if(date.getTime() >= start.getTime() && date.getTime() <= end.getTime()) {
+				if(date.getTime() >= start.getTime() && date.getTime() <= end.getTime())
 					cat.total += expense.sum;
-                }
 			} else {
 				cat.total += expense.sum;
 			}
@@ -304,11 +288,10 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 
 		// Executed at modal close: first function at ok, second at cancel
 		modalInstance.result.then(function (category) {
-			var date = new Date();
 			var cat = {
 				'name' : category.name,
 				'color' : category.color,
-				'date' : date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
+				'date' : currentDate(),
 				'total' : 0
 			};
 
@@ -338,11 +321,10 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 
 		// Executed at modal close: first function at ok, second at cancel
 		modalInstance.result.then(function (expense) {
-			var date = new Date();
 			var exp = {
 				'name' : expense.name,
 				'sum' : expense.sum,
-				'date' : date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
+				'date' : currentDate(),
 				'category' : expense.category_id
 			};
 
@@ -379,3 +361,8 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 		}, function () { });
 	};
 });
+
+var currentDate = function () {
+	var date = new Date();
+	return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+}
