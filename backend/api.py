@@ -53,7 +53,7 @@ def add_expense():
 
 
 
-        db_exp = storage.Expense(name=e['name'], sum=e['sum'], category_id=e['category_id'], date=time.strftime("%Y-%m-%d %H:%M:%S"))
+        db_exp = storage.Expense(name=e['name'], sum=e['sum'], category_id=e['category_id'], date=time.strftime("%Y-%m-%d"))
         db_exp.save()
 
 
@@ -95,7 +95,7 @@ def add_category():
         if storage.Category.select(storage.Category.name).where(storage.Category.name == c['name']).count() != 0:
             return make_response(get_request_response(json.dumps('A category named \'{0}\' already exists.'.format(c['name']))), 400)
 
-        db_cat = storage.Category(name=c['name'], color=c['color'], date=time.strftime("%Y-%m-%d %H:%M:%S"))
+        db_cat = storage.Category(name=c['name'], color=c['color'], date=time.strftime("%Y-%m-%d"))
         db_cat.save()
 
         return get_request_response(json.dumps({'id': db_cat.id}))
