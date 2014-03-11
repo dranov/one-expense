@@ -8,6 +8,8 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 	$rootScope.colorScheme = ['#F4B300', '#78BA00', '#2673EC', '#AE113D', '#006AC1', '#FF981D', '#008287', '#199900', 
 							'#AA40FF', '#00C13F', '#FF2E12', '#FF1D77', '#00A4A4', '#91D100', '#1FAEFF', '#FF76BC'];
 
+    
+    var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
 	$rootScope.timeSpan = { start : null, end : null };
 
 	$rootScope.formatDate = function (date) {
