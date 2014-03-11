@@ -23,7 +23,7 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 
 	$rootScope.formatDateForBackend = function (date) {
 		var fday = (date.getDate() < 10 ? '0' : 0) + date.getDate();
-		var fmonth = (date.getMonth() + 1 ? '0' : 1) + date.getMonth();
+		var fmonth = (date.getMonth() + 1 ? '0' : 0) + (date.getMonth() + 1);
 		var fyear = date.getFullYear();
 		return fyear + '-' + fmonth + '-' + fday;
 	}
@@ -308,7 +308,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			var cat = {
 				'name' : category.name,
 				'color' : category.color,
-				'date' : new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
+				'date' : date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
 				'total' : 0
 			};
 
@@ -316,7 +316,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 				cat.id = category.id;
 				$rootScope.categories[cat.id] = cat;
 
-				console.log('Category \'' + cat.name + '\' with id ' + cat.id + ' saved.');
+				console.log('Category \'' + cat.name + '\' with id ' + cat.id + ' saved at ' + cat.date);
 			}, function (response) {
 				console.log('Category \'' + cat.name + '\' could not be saved: response ' + response);
 			});
@@ -342,7 +342,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 			var exp = {
 				'name' : expense.name,
 				'sum' : expense.sum,
-				'date' : new Date(date.getFullYear(), date.getMonth(), date.getDate(), 0, 0, 0, 0),
+				'date' : date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(),
 				'category' : expense.category_id
 			};
 
@@ -350,7 +350,7 @@ controllers.controller('NewModalCtrl', function ($scope, $rootScope, $modal) {
 				exp.id = expense.id;
 				$rootScope.expenses[exp.id] = exp;
 
-				console.log('Expense \'' + exp.name + '\' saved.');
+				console.log('Expense \'' + exp.name + '\' saved at ' + exp.date);
 			}, function (response) {
 				console.log('Expense \'' + exp.name + '\' could not be saved: httpResponse ' + response);
 			});
