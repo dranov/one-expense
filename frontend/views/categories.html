@@ -5,8 +5,8 @@
 </div>
 
 <div id="head">
-	<div id="currentDate"> {{ $root.currentDate }} </div>
-	<div id="timeSpan" ng-if="$root.timeSpan.start !== null"> {{ $root.formatDate($root.timeSpan.start) }} - {{ $root.formatDate($root.timeSpan.end) }} </div>
+    <div id="timeSpan" ng-if="$root.timeSpan.start !== null && ($root.timeSpan.start === $root.timeSpan.end)">{{$root.formatDate($root.timeSpan.start)}}</div>
+	<div id="timeSpan" ng-if="$root.timeSpan.start !== null && ($root.timeSpan.start !== $root.timeSpan.end)"> {{ $root.formatDate($root.timeSpan.start) }} – {{ $root.formatDate($root.timeSpan.end) }} </div>
 	<div id="total"> {{ total }} RON </div>
 </div>
 

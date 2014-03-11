@@ -5,16 +5,13 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 	// Using $rootScope to have access to categories and expenses from anywhere in app.
 	$rootScope.categories = new Object();
 	$rootScope.expenses = new Object();
-	$rootScope.currentDate = '';
 	$rootScope.colorScheme = ['#F4B300', '#78BA00', '#2673EC', '#AE113D', '#006AC1', '#FF981D', '#008287', '#199900', 
 							'#AA40FF', '#00C13F', '#FF2E12', '#FF1D77', '#00A4A4', '#91D100', '#1FAEFF', '#FF76BC'];
+
 	$rootScope.timeSpan = { start : null, end : null };
 
 	$rootScope.formatDate = function (date) {
-		var fday = (date.getDate() < 10 ? '0' : 0) + date.getDate();
-		var fmonth = (date.getMonth() + 1 < 10 ? '0' : 0) + (date.getMonth() + 1);
-		var fyear = date.getFullYear();
-		return fday + '.' + fmonth + '.' + fyear;
+        return months[date.getMonth()] + ' ' + date.getDate() + ' ' + date.getFullYear();
 	}
 
 	// Categories is a service / factory that will provide all the categories from the server as an object.
@@ -73,8 +70,6 @@ controllers.controller('LoadCtrl', function ($scope, $rootScope, Categories, Exp
 		}
 	}
 
-	var months = new Array('January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December');
-	$rootScope.currentDate = months[new Date().getMonth()] + ' ' + new Date().getDate();
 });
 
 /*-- Categories Controller: used on "/#/" page --*/
@@ -229,6 +224,11 @@ controllers.controller('NewExpenseModalInstanceCtrl', function ($scope, $rootSco
 controllers.controller('TimeSpanModalInstanceCtrl', function ($scope, $modalInstance) {
 	$scope.time = {};
 	$scope.alerts = [];
+
+    var today = new Date();
+
+    $scope.time.start = new Date(today.getFullYear(), today.getMonth(), 1);
+    $scope.time.end = today;
 
 	$scope.ok = function () {
 		$scope.alerts = [];
