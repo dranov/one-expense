@@ -39,6 +39,7 @@ body {
 	height: 35px;
 
 	margin: 12.5px;
+    margin-left: 0px;
 
 	cursor: pointer;
 }
@@ -48,6 +49,7 @@ body {
 	height: 35px;
 
 	margin: 12.5px;
+    margin-left: 0px;
 
 	cursor: pointer;
 }
