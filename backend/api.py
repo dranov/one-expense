@@ -59,6 +59,41 @@ def add_expense():
 
         return get_request_response(json.dumps({'id': db_exp.id}))
 
+# DELETE
+@app.route(settings.API_URL_PREFIX + 'expense/<int:id>', methods=['DELETE', 'OPTIONS'])
+@crossdomain(origin='*', headers='access-control-allow-origin,content-type')
+def delete_expense(id):
+    if flask.request.method == 'DELETE':
+
+        try:
+            exp = storage.Expense.get(storage.Expense.id == id)
+            exp.delete_instance()
+        except storage.Expense.DoesNotExist:
+            return make_response(get_request_response(json.dumps('Expense does not exist.')), 404)
+
+        return get_request_response('')
+
+# DELETE category (also deletes all expenses in that category)
+@app.route(settings.API_URL_PREFIX + 'category/<int:id>', methods=['DELETE', 'OPTIONS'])
+@crossdomain(origin='*', headers='access-control-allow-origin,content-type')
+def delete_category(id):
+    if flask.request.method == 'DELETE':
+        try:
+            # Delete all expenses
+            exp = storage.Expense.select()
+            exp = exp.where(storage.Expense.category_id == id)
+
+            for e in exp:
+                e.delete_instance()
+
+            # Delete category
+            cat = storage.Category.get(storage.Category.id == id)
+            cat.delete_instance()
+
+        except storage.Category.DoesNotExist:
+            return make_response(get_request_response(json.dumps('.')), 404)
+
+        return get_request_response('')
 
 
 # GET
